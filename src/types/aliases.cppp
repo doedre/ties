@@ -1,0 +1,255 @@
+module;
+
+#include <fundamental_types.hpp>
+
+export module ties.types:aliases;
+
+// Kept them here due to compilation bug
+template<typename T1, typename T2>
+inline constexpr bool __same_types = false;
+
+template<typename T>
+inline constexpr bool __same_types<T, T> = true;
+
+export namespace ties {
+  template<typename T1, typename T2>
+  concept same_types = __same_types<T1, T2>;
+}
+
+export namespace ties::types {
+  using i8    = signed char;
+  using u8    = unsigned char;
+  using i16   = signed short int;
+  using u16   = unsigned short int;
+  using i32   = signed int;
+  using u32   = unsigned int;
+  using i64   = signed __INT64;
+  using u64   = unsigned __INT64;
+  using i128  = __int128_t;
+  using u128  = __uint128_t;
+  using isize = signed __SIZE;
+  using usize = unsigned __SIZE;
+
+  using f32 = float;
+  using f64 = double;
+  using f128 = long double;
+
+  using nullptr_t = decltype(nullptr);
+
+  template<typename ...>
+  using void_t = void;
+
+  [[nodiscard]] consteval i8 operator""_i8(unsigned long long i) noexcept
+  {
+    return static_cast<i8>(i);
+  }
+
+  [[nodiscard]] consteval u8 operator""_u8(unsigned long long i) noexcept
+  {
+    return static_cast<u8>(i);
+  }
+
+  [[nodiscard]] consteval i16 operator""_i16(unsigned long long i) noexcept
+  {
+    return static_cast<i16>(i);
+  }
+
+  [[nodiscard]] consteval u16 operator""_u16(unsigned long long i) noexcept
+  {
+    return static_cast<u16>(i);
+  }
+
+  [[nodiscard]] consteval i32 operator""_i32(unsigned long long i) noexcept
+  {
+    return static_cast<i32>(i);
+  }
+
+  [[nodiscard]] consteval u32 operator""_u32(unsigned long long i) noexcept
+  {
+    return static_cast<u32>(i);
+  }
+
+  [[nodiscard]] consteval i64 operator""_i64(unsigned long long i) noexcept
+  {
+    return static_cast<i64>(i);
+  }
+
+  [[nodiscard]] consteval u64 operator""_u64(unsigned long long i) noexcept
+  {
+    return static_cast<u64>(i);
+  }
+
+  [[nodiscard]] consteval i128 operator""_i128(unsigned long long i) noexcept
+  {
+    return static_cast<i128>(i);
+  }
+
+  [[nodiscard]] consteval u128 operator""_u128(unsigned long long i) noexcept
+  {
+    return static_cast<u128>(i);
+  }
+
+  [[nodiscard]] consteval f32 operator""_f32(long double f) noexcept
+  {
+    return static_cast<f32>(f);
+  }
+
+  [[nodiscard]] consteval f64 operator""_f64(long double f) noexcept
+  {
+    return static_cast<f64>(f);
+  }
+
+  [[nodiscard]] consteval f128 operator""_f128(long double f) noexcept
+  {
+    return static_cast<f128>(f);
+  }
+
+  [[nodiscard]] consteval bool operator""_bool(unsigned long long i) noexcept
+  {
+    return static_cast<bool>(i);
+  }
+
+  [[nodiscard]] consteval isize operator""_isize(unsigned long long i) noexcept
+  {
+    return static_cast<isize>(i);
+  }
+
+  [[nodiscard]] consteval usize operator""_usize(unsigned long long i) noexcept
+  {
+    return static_cast<usize>(i);
+  }
+
+  template<typename T>
+  concept integral =  same_types<T, i8> ||
+                      same_types<T, u8> ||
+                      same_types<T, i16> ||
+                      same_types<T, u16> ||
+                      same_types<T, i32> ||
+                      same_types<T, u32> ||
+                      same_types<T, i64> ||
+                      same_types<T, u64> ||
+                      same_types<T, i128> ||
+                      same_types<T, u128>;
+
+  template<typename T>
+  concept floating_point =  same_types<T, f32> ||
+                            same_types<T, f64> ||
+                            same_types<T, f128>;
+
+  template<typename T>
+  concept signed_integral = same_types<T, i8> ||
+                            same_types<T, i16> ||
+                            same_types<T, i32> ||
+                            same_types<T, i64> ||
+                            same_types<T, i128>;
+
+  template<typename T>
+  concept unsigned_integral = same_types<T, u8> ||
+                              same_types<T, u16> ||
+                              same_types<T, u32> ||
+                              same_types<T, u64> ||
+                              same_types<T, u128>;
+
+  template<typename T>
+  concept arithmetic = integral<T> || floating_point<T>;
+
+  template<typename T>
+  concept fundamental = integral<T> ||
+                        floating_point<T> ||
+                        same_types<T, void> ||
+                        same_types<T, nullptr_t>;
+
+
+  template<typename T>
+  requires arithmetic<T>
+  struct info {
+    static constexpr u32 bits = sizeof(T) * __CHAR_BIT;
+  };
+
+  template<>
+  struct info<i8> {
+    static constexpr u32 bits = sizeof(i8) * __CHAR_BIT;
+    using signed_type = i8;
+    using unsigned_type = u8;
+  };
+
+  template<>
+  struct info<u8> {
+    static constexpr u32 bits = sizeof(u8) * __CHAR_BIT;
+    using signed_type = i8;
+    using unsigned_type = u8;
+  };
+
+  template<>
+  struct info<i16> {
+    static constexpr u32 bits = sizeof(i16) * __CHAR_BIT;
+    using signed_type = i16;
+    using unsigned_type = u16;
+  };
+
+  template<>
+  struct info<u16> {
+    static constexpr u32 bits = sizeof(u16) * __CHAR_BIT;
+    using signed_type = i16;
+    using unsigned_type = u16;
+  };
+
+  template<>
+  struct info<i32> {
+    static constexpr u32 bits = sizeof(i32) * __CHAR_BIT;
+    using signed_type = i32;
+    using unsigned_type = u32;
+  };
+
+  template<>
+  struct info<u32> {
+    static constexpr u32 bits = sizeof(u32) * __CHAR_BIT;
+    using signed_type = i32;
+    using unsigned_type = u32;
+  };
+
+  template<>
+  struct info<i64> {
+    static constexpr u32 bits = sizeof(i64) * __CHAR_BIT;
+    using signed_type = i64;
+    using unsigned_type = u64;
+  };
+
+  template<>
+  struct info<u64> {
+    static constexpr u32 bits = sizeof(u64) * __CHAR_BIT;
+    using signed_type = i64;
+    using unsigned_type = u64;
+  };
+
+  template<>
+  struct info<i128> {
+    static constexpr u32 bits = sizeof(i128) * __CHAR_BIT;
+    using signed_type = i128;
+    using unsigned_type = u128;
+  };
+
+  template<>
+  struct info<u128> {
+    static constexpr u32 bits = sizeof(u128) * __CHAR_BIT;
+    using signed_type = i128;
+    using unsigned_type = u128;
+  };
+
+  template<>
+  struct info<f32> {
+    static constexpr u32 bits = sizeof(f32) * __CHAR_BIT;
+    static constexpr u32 mantissa_bits = 23;
+    static constexpr u32 exponent_bits = 8;
+    static constexpr u32 exponent_bias = 127;
+  };
+
+  template<>
+  struct info<f64> {
+    static constexpr u32 bits = sizeof(f32) * __CHAR_BIT;
+    static constexpr u64 mantissa_bits = 52;
+    static constexpr u64 exponent_bits = 11;
+    static constexpr u64 exponent_bias = 1023;
+  };
+}
+
