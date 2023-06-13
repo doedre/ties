@@ -120,48 +120,6 @@ export namespace ties::types {
   }
 
   template<typename T>
-  concept integral =  same_types<T, i8> ||
-                      same_types<T, u8> ||
-                      same_types<T, i16> ||
-                      same_types<T, u16> ||
-                      same_types<T, i32> ||
-                      same_types<T, u32> ||
-                      same_types<T, i64> ||
-                      same_types<T, u64> ||
-                      same_types<T, i128> ||
-                      same_types<T, u128>;
-
-  template<typename T>
-  concept floating_point =  same_types<T, f32> ||
-                            same_types<T, f64> ||
-                            same_types<T, f128>;
-
-  template<typename T>
-  concept signed_integral = same_types<T, i8> ||
-                            same_types<T, i16> ||
-                            same_types<T, i32> ||
-                            same_types<T, i64> ||
-                            same_types<T, i128>;
-
-  template<typename T>
-  concept unsigned_integral = same_types<T, u8> ||
-                              same_types<T, u16> ||
-                              same_types<T, u32> ||
-                              same_types<T, u64> ||
-                              same_types<T, u128>;
-
-  template<typename T>
-  concept arithmetic = integral<T> || floating_point<T>;
-
-  template<typename T>
-  concept fundamental = integral<T> ||
-                        floating_point<T> ||
-                        same_types<T, void> ||
-                        same_types<T, nullptr_t>;
-
-
-  template<typename T>
-  requires arithmetic<T>
   struct info {
     static constexpr u32 bits = sizeof(T) * __CHAR_BIT;
   };

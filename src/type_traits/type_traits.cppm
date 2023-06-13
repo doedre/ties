@@ -64,12 +64,12 @@ export namespace ties::type_traits {
     static constexpr T value = val;
     using value_type = T;
 
-    constexpr operator value_type() const noexcept
+    consteval operator value_type() const noexcept
     {
       return value;
     }
 
-    constexpr value_type operator()() const noexcept
+    consteval value_type operator()() const noexcept
     {
       return value;
     }

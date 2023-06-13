@@ -1,13 +1,14 @@
 export module ties.math;
 
 export import ties.types;
+export import ties.types.tuple;
 
 import ties.concepts;
 
 export namespace ties::math {
 
   template<typename T>
-  requires types::integral<T>
+  requires concepts::integral<T>
   [[nodiscard]] constexpr auto abs(T val) noexcept -> T
   {
     if (val < 0) {
@@ -18,38 +19,38 @@ export namespace ties::math {
   }
 
   template<typename T>
-  requires types::floating_point<T>
+  requires concepts::floating_point<T>
   [[nodiscard]] constexpr auto abs(T val) noexcept -> T
   {
     return 0;
   }
 
   template<typename T>
-  requires types::signed_integral<T>
+  requires concepts::signed_integral<T>
   [[nodiscard]] constexpr auto sign(T val) noexcept -> T
   {
     return (val > 0) - (val < 0);
   }
 
   template<typename T>
-  requires types::unsigned_integral<T>
+  requires concepts::unsigned_integral<T>
   [[nodiscard]] constexpr auto sign(T val) noexcept -> T
   {
     return val != 0;
   }
 
   template<typename T>
-  requires types::floating_point<T>
+  requires concepts::floating_point<T>
   [[nodiscard]] constexpr auto sign(T val) noexcept -> T
   {
     return 0;
   }
 
   template<typename T>
-  requires types::integral<T>
+  requires concepts::integral<T>
   [[nodiscard]] constexpr auto all_ones() noexcept -> T
   {
-    if constexpr (types::signed_integral<T>) {
+    if constexpr (concepts::signed_integral<T>) {
       return -1;
     } else {
       return types::limits<T>::max;
@@ -58,7 +59,7 @@ export namespace ties::math {
 
   // Mula et al(2018)
   template<typename T>
-  requires types::integral<T>
+  requires concepts::integral<T>
   [[nodiscard]] constexpr auto count_ones(T val) noexcept -> types::u32
   {
     types::u32 res = 0;
@@ -69,7 +70,7 @@ export namespace ties::math {
   }
 
   template<typename T>
-  requires types::integral<T>
+  requires concepts::integral<T>
   [[nodiscard]] constexpr auto count_zeros(T val) noexcept -> types::u32
   {
     return types::info<T>::bits - count_ones(val);
@@ -77,7 +78,7 @@ export namespace ties::math {
 
   // http://graphics.stanford.edu/~seander/bithacks.html#ZerosOnRightLinear
   template<typename T>
-  requires types::integral<T>
+  requires concepts::integral<T>
   [[nodiscard]] constexpr auto trailing_zeros(T val) noexcept -> types::u32
   {
     if (val) {
@@ -93,7 +94,7 @@ export namespace ties::math {
   }
 
   template<typename T>
-  requires types::integral<T>
+  requires concepts::integral<T>
   [[nodiscard]] constexpr auto trailing_ones(T val) noexcept -> types::u32
   {
     if (val != all_ones<T>()) {
@@ -110,7 +111,7 @@ export namespace ties::math {
 
   // http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogObvious
   template<typename T>
-  requires types::integral<T>
+  requires concepts::integral<T>
   [[nodiscard]] constexpr auto leading_zeros(T val) noexcept -> types::u32
   {
     if (val != all_ones<T>()) {
@@ -125,7 +126,7 @@ export namespace ties::math {
   }
 
   template<typename T>
-  requires types::integral<T>
+  requires concepts::integral<T>
   [[nodiscard]] constexpr auto leading_ones(T val) noexcept -> types::u32
   {
     if (val != all_ones<T>()) {
@@ -137,7 +138,7 @@ export namespace ties::math {
 
   // Look for Hare's implementation
   template<typename T>
-  requires types::integral<T>
+  requires concepts::integral<T>
   [[nodiscard]] constexpr auto carrying_add(T x, T y, bool carry)
       -> types::tuple<T, bool>
   {
@@ -147,7 +148,7 @@ export namespace ties::math {
   }
 
   template<typename T>
-  requires types::integral<T>
+  requires concepts::integral<T>
   [[nodiscard]] constexpr auto borrowing_sub(T x, T y, bool borrow)
       -> types::tuple<T, bool>
   {

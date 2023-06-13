@@ -1,13 +1,14 @@
-export module ties.types:tuple;
+export module ties.types.tuple;
 
-import :aliases;
+import ties.types;
+import ties.concepts;
 import ties.memory;
 import ties.type_traits;
 import ties.functional.monad;
 
 export namespace ties::types {
   template<typename T, T... Ints>
-  requires types::integral<T>
+  requires concepts::integral<T>
   struct integer_list {
     using value_type = T;
 
@@ -59,7 +60,7 @@ namespace ties::types::impl {
 
 export namespace ties::types {
   template<typename T, T Len>
-  requires types::integral<T>
+  requires concepts::integral<T>
   using integer_sequence =
       typename impl::log_make_sequence<T, type_traits::static_constant_type<T, Len>>::type;
 

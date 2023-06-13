@@ -35,5 +35,30 @@ export namespace ties::functional::monad {
     using made_type = T<Args...>;
     return make_trait<made_type>::template make(memory::forward<Args>(args)...);
   }
+
+  /*
+  template<typename T>
+  struct chain_trait {
+    template<typename X, typename Func>
+    static constexpr auto chain(
+  };
+  */
+
+  template<typename T>
+  struct join_trait {
+    static constexpr auto join(const T& val) noexcept
+    {
+      return val.join();
+    }
+  };
+
+  template<
+      template<typename> typename T,
+      typename X
+  >
+  constexpr auto join(T<X>&& val) noexcept
+  {
+    return join_trait<T<X>>::template join(memory::forward<T<X>>(val));
+  }
 }
 

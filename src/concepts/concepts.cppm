@@ -1,5 +1,10 @@
 export module ties.concepts;
 
+import ties.types;
+import ties.type_traits;
+
+using namespace ties::types;
+
 namespace ties::concepts::impl {
   template<typename T1, typename T2>
   inline constexpr bool same_types = false;
@@ -36,6 +41,18 @@ namespace ties::concepts::impl {
 
   template<typename T>
   inline constexpr bool volatile_qualified<const volatile T> = true;
+
+  template<typename T>
+  inline constexpr bool array_with_unknown_bounds = false;
+
+  template<typename T>
+  inline constexpr bool array_with_unknown_bounds<T[]> = true;
+
+  template<typename T>
+  inline constexpr bool array_with_known_bounds = false;
+
+  template<typename T, usize Size>
+  inline constexpr bool array_with_known_bounds<T[Size]> = true;
 }
 
 export namespace ties::concepts {
@@ -48,10 +65,44 @@ export namespace ties::concepts {
   };
 
   template<typename T>
-  concept pointer = requires(T p) {
-    *p;
-    p == nullptr;
-  };
+  concept integral =  same_types<T, i8> or
+                      same_types<T, u8> or
+                      same_types<T, i16> or
+                      same_types<T, u16> or
+                      same_types<T, i32> or
+                      same_types<T, u32> or
+                      same_types<T, i64> or
+                      same_types<T, u64> or
+                      same_types<T, i128> or
+                      same_types<T, u128>;
+
+  template<typename T>
+  concept floating_point =  same_types<T, f32> or
+                            same_types<T, f64> or
+                            same_types<T, f128>;
+
+  template<typename T>
+  concept signed_integral = same_types<T, i8> or
+                            same_types<T, i16> or
+                            same_types<T, i32> or
+                            same_types<T, i64> or
+                            same_types<T, i128>;
+
+  template<typename T>
+  concept unsigned_integral = same_types<T, u8> or
+                              same_types<T, u16> or
+                              same_types<T, u32> or
+                              same_types<T, u64> or
+                              same_types<T, u128>;
+
+  template<typename T>
+  concept arithmetic = integral<T> or floating_point<T>;
+
+  template<typename T>
+  concept fundamental = integral<T> or
+                        floating_point<T> or
+                        same_types<T, void> or
+                        same_types<T, nullptr_t>;
 
   template<typename T>
   concept lvalue_reference = impl::lvalue_reference<T>;
@@ -64,5 +115,42 @@ export namespace ties::concepts {
 
   template<typename T>
   concept volatile_qualified = impl::volatile_qualified<T>;
+
+  template<typename T>
+  concept enum_object = __is_enum(T);
+
+  template<typename T>
+  concept union_object = __is_union(T);
+
+  template<typename T>
+  concept class_object = __is_class(T);
+
+  template<typename T>
+  concept function = not lvalue_reference<T> and not rvalue_reference<T> and not const_qualified<const T>;
+
+  template<typename T>
+  concept array_with_unknown_bounds = impl::array_with_unknown_bounds<T>;
+
+  template<typename T>
+  concept array_with_known_bounds = impl::array_with_known_bounds<T>;
+
+  template<typename T>
+  concept array = array_with_unknown_bounds<T> or array_with_known_bounds<T>;
+
+  template<typename T>
+  concept incomplete = same_types<type_traits::remove_cv_qualifiers<T>, void> or
+                       function<T> or
+                       lvalue_reference<T> or
+                       rvalue_reference<T> or
+                       array_with_unknown_bounds<T>;
+
+  template<typename T>
+  concept trivially_destructible = not incomplete<T> and __has_trivial_destructor(T);
+
+  template<typename T, typename... Args>
+  concept trivially_constructible = not incomplete<T> and __is_trivially_constructible(T, Args...);
+
+  template<typename T>
+  concept trivially_default_constructible = trivially_constructible<T>;
 }
 

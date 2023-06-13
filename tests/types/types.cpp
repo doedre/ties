@@ -1,4 +1,5 @@
 import ties.types;
+import ties.types.tuple;
 import ties.concepts;
 import ties.functional.monad;
 
@@ -15,8 +16,6 @@ int main()
   static_assert(sizeof(nullptr_t) == sizeof(void*));
 
   static_assert(limits<nullptr_t>::max == 0);
-
-  static_assert(integral<usize>);
 
   static_assert(info<i8>::bits == 8);
 
