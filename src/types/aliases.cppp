@@ -4,18 +4,6 @@ module;
 
 export module ties.types:aliases;
 
-// Kept them here due to compilation bug
-template<typename T1, typename T2>
-inline constexpr bool __same_types = false;
-
-template<typename T>
-inline constexpr bool __same_types<T, T> = true;
-
-export namespace ties {
-  template<typename T1, typename T2>
-  concept same_types = __same_types<T1, T2>;
-}
-
 export namespace ties::types {
   using i8    = signed char;
   using u8    = unsigned char;

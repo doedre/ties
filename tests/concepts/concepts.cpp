@@ -33,4 +33,12 @@ int main()
 
   static_assert(ties::concepts::array<int[]>);
   static_assert(ties::concepts::array<int[10]>);
+
+  static_assert(ties::concepts::destructible<int>);
+
+  enum class test { token };
+  enum test_unscoped { token };
+  static_assert(ties::concepts::scoped_enum_object<test>);
+  static_assert(not ties::concepts::scoped_enum_object<test_unscoped>);
+  static_assert(ties::concepts::enum_object<test_unscoped>);
 }

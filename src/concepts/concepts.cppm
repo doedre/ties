@@ -53,6 +53,12 @@ namespace ties::concepts::impl {
 
   template<typename T, usize Size>
   inline constexpr bool array_with_known_bounds<T[Size]> = true;
+
+  template<typename T>
+  inline constexpr bool pointer = false;
+
+  template<typename T>
+  inline constexpr bool pointer<T*> = true;
 }
 
 export namespace ties::concepts {
@@ -111,13 +117,25 @@ export namespace ties::concepts {
   concept rvalue_reference = impl::rvalue_reference<T>;
 
   template<typename T>
+  concept reference = lvalue_reference<T> or rvalue_reference<T>;
+
+  template<typename T>
   concept const_qualified = impl::const_qualified<T>;
 
   template<typename T>
   concept volatile_qualified = impl::volatile_qualified<T>;
 
   template<typename T>
+  concept pointer = impl::pointer<type_traits::remove_cv_qualifiers<T>>;
+
+  template<typename T>
   concept enum_object = __is_enum(T);
+
+  template<typename T>
+  concept scoped_enum_object = enum_object<T> and
+      not requires(T val, void(*f)(int)) {
+        f(val);    // functions taking an int should not accept scoped enums
+      };
 
   template<typename T>
   concept union_object = __is_union(T);
@@ -138,19 +156,73 @@ export namespace ties::concepts {
   concept array = array_with_unknown_bounds<T> or array_with_known_bounds<T>;
 
   template<typename T>
-  concept incomplete = same_types<type_traits::remove_cv_qualifiers<T>, void> or
-                       function<T> or
-                       lvalue_reference<T> or
-                       rvalue_reference<T> or
-                       array_with_unknown_bounds<T>;
+  concept incomplete = requires(type_traits::remove_cv_qualifiers<T> val) {
+    val = val;   // should fail if incomplete
+  };
 
   template<typename T>
-  concept trivially_destructible = not incomplete<T> and __has_trivial_destructor(T);
+  concept standard_layouted = __is_standard_layout(T);
+
+  template<typename T>
+  concept trivially_copyable = __is_trivially_copyable(T);
+
+  template<typename T>
+  concept trivial = __is_trivial(T);
 
   template<typename T, typename... Args>
-  concept trivially_constructible = not incomplete<T> and __is_trivially_constructible(T, Args...);
+  concept constructible = __is_constructible(T, Args...);
+
+  template<typename T, typename... Args>
+  concept trivially_constructible = __is_trivially_constructible(T, Args...);
+
+  template<typename T>
+  concept destructible = requires(T val) {
+    val.~T();
+  };
+
+  template<typename T>
+  concept trivially_destructible = __has_trivial_destructor(T);
+
+  template<typename T>
+  concept default_constructible = constructible<T>;
 
   template<typename T>
   concept trivially_default_constructible = trivially_constructible<T>;
+
+  template<typename T>
+  concept copy_constructible = constructible<T, type_traits::add_lvalue_reference<const T>>;
+
+  template<typename T>
+  concept trivially_copy_constructible =
+      trivially_constructible<T, type_traits::add_lvalue_reference<const T>>;
+
+  template<typename T>
+  concept move_constructible = constructible<T, type_traits::add_rvalue_reference<T>>;
+
+  template<typename T>
+  concept trivially_move_constructible =
+      trivially_constructible<T, type_traits::add_rvalue_reference<T>>;
+
+  template<typename T, typename U>
+  concept assignable = __is_assignable(T, U);
+
+  template<typename T, typename U>
+  concept trivially_assignable = __is_trivially_assignable(T, U);
+
+  template<typename T>
+  concept copy_assignable =
+      assignable<type_traits::add_lvalue_reference<T>, type_traits::add_lvalue_reference<const T>>;
+
+  template<typename T>
+  concept trivially_copy_assignable =
+      trivially_assignable<type_traits::add_lvalue_reference<T>, type_traits::add_lvalue_reference<const T>>;
+
+  template<typename T>
+  concept move_assignable =
+      assignable<type_traits::add_lvalue_reference<T>, type_traits::add_rvalue_reference<T>>;
+
+  template<typename T>
+  concept trivially_move_assignable =
+      trivially_assignable<type_traits::add_lvalue_reference<T>, type_traits::add_rvalue_reference<T>>;
 }
 

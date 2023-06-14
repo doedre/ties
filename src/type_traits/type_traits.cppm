@@ -2,6 +2,11 @@ export module ties.type_traits;
 
 namespace ties::type_traits::impl {
   template<typename T>
+  struct type_identity {
+    using type = T;
+  };
+
+  template<typename T>
   struct remove_reference {
     using type = T;
   };
@@ -55,7 +60,6 @@ namespace ties::type_traits::impl {
   struct remove_cv_qualifiers<const volatile T> {
     using type = T;
   };
-
 }
 
 export namespace ties::type_traits {
@@ -78,6 +82,12 @@ export namespace ties::type_traits {
   using true_type = static_constant_type<bool, true>;
   using false_type = static_constant_type<bool, false>;
 
+  template<typename...>
+  using void_t = void;
+
+  template<typename T>
+  using type_identity = typename impl::type_identity<T>::type;
+
   template<typename T>
   using remove_reference = typename impl::remove_reference<T>::type;
 
@@ -89,4 +99,34 @@ export namespace ties::type_traits {
 
   template<typename T>
   using remove_volatile = typename impl::remove_volatile<T>::type;
+}
+
+namespace ties::type_traits::impl {
+  template<typename T, typename = void>
+  struct add_lvalue_reference {
+    using type = T;
+  };
+
+  template<typename T>
+  struct add_lvalue_reference<T, void_t<T&>> {
+    using type = T&;
+  };
+
+  template<typename T, typename = void>
+  struct add_rvalue_reference {
+    using type = T;
+  };
+
+  template<typename T>
+  struct add_rvalue_reference<T, void_t<T&&>> {
+    using type = T&&;
+  };
+}
+
+export namespace ties::type_traits {
+  template<typename T>
+  using add_lvalue_reference = typename impl::add_lvalue_reference<T>::type;
+
+  template<typename T>
+  using add_rvalue_reference = typename impl::add_rvalue_reference<T>::type;
 }
