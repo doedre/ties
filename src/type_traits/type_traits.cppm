@@ -60,6 +60,31 @@ namespace ties::type_traits::impl {
   struct remove_cv_qualifiers<const volatile T> {
     using type = T;
   };
+
+  template<typename T>
+  struct remove_pointer {
+    using type = T;
+  };
+
+  template<typename T>
+  struct remove_pointer<T*> {
+    using type = T;
+  };
+
+  template<typename T>
+  struct remove_pointer<const T*> {
+    using type = T;
+  };
+
+  template<typename T>
+  struct remove_pointer<volatile T*> {
+    using type = T;
+  };
+
+  template<typename T>
+  struct remove_pointer<const volatile T*> {
+    using type = T;
+  };
 }
 
 export namespace ties::type_traits {
@@ -99,6 +124,9 @@ export namespace ties::type_traits {
 
   template<typename T>
   using remove_volatile = typename impl::remove_volatile<T>::type;
+
+  template<typename T>
+  using remove_pointer = typename impl::remove_pointer<T>::type;
 }
 
 namespace ties::type_traits::impl {
@@ -121,6 +149,41 @@ namespace ties::type_traits::impl {
   struct add_rvalue_reference<T, void_t<T&&>> {
     using type = T&&;
   };
+
+  template<typename T>
+  struct add_const_qualifier {
+    using type = const T;
+  };
+
+  template<typename T>
+  struct add_volatile_qualifier {
+    using type = volatile T;
+  };
+
+  template<typename T>
+  struct add_const_volatile_qualifier {
+    using type = const volatile T;
+  };
+
+  template<typename T, typename = void>
+  struct add_pointer {
+    using type = T;
+  };
+
+  template<typename T>
+  struct add_pointer<T, void_t<T*>> {
+    using type = T*;
+  };
+
+  template<typename T>
+  struct add_pointer<T&> {
+    using type = T*;
+  };
+
+  template<typename T>
+  struct add_pointer<T&&> {
+    using type = T*;
+  };
 }
 
 export namespace ties::type_traits {
@@ -129,4 +192,17 @@ export namespace ties::type_traits {
 
   template<typename T>
   using add_rvalue_reference = typename impl::add_rvalue_reference<T>::type;
+
+  template<typename T>
+  using add_const_qualifier = typename impl::add_const_qualifier<T>::type;
+
+  template<typename T>
+  using add_volatile_qualifier = typename impl::add_volatile_qualifier<T>::type;
+
+  template<typename T>
+  using add_const_volatile_qualifier = typename impl::add_const_volatile_qualifier<T>::type;
+
+  template<typename T>
+  using add_pointer = typename impl::add_pointer<T>::type;
 }
+

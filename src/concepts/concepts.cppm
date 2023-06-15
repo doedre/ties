@@ -71,44 +71,49 @@ export namespace ties::concepts {
   };
 
   template<typename T>
-  concept integral =  same_types<T, i8> or
-                      same_types<T, u8> or
-                      same_types<T, i16> or
-                      same_types<T, u16> or
-                      same_types<T, i32> or
-                      same_types<T, u32> or
-                      same_types<T, i64> or
-                      same_types<T, u64> or
-                      same_types<T, i128> or
-                      same_types<T, u128>;
+  concept integral =
+      same_types<type_traits::remove_cv_qualifiers<T>, i8> or
+      same_types<type_traits::remove_cv_qualifiers<T>, u8> or
+      same_types<type_traits::remove_cv_qualifiers<T>, i16> or
+      same_types<type_traits::remove_cv_qualifiers<T>, u16> or
+      same_types<type_traits::remove_cv_qualifiers<T>, i32> or
+      same_types<type_traits::remove_cv_qualifiers<T>, u32> or
+      same_types<type_traits::remove_cv_qualifiers<T>, i64> or
+      same_types<type_traits::remove_cv_qualifiers<T>, u64> or
+      same_types<type_traits::remove_cv_qualifiers<T>, i128> or
+      same_types<type_traits::remove_cv_qualifiers<T>, u128>;
 
   template<typename T>
-  concept floating_point =  same_types<T, f32> or
-                            same_types<T, f64> or
-                            same_types<T, f128>;
+  concept floating_point =
+      same_types<type_traits::remove_cv_qualifiers<T>, f32> or
+      same_types<type_traits::remove_cv_qualifiers<T>, f64> or
+      same_types<type_traits::remove_cv_qualifiers<T>, f128>;
 
   template<typename T>
-  concept signed_integral = same_types<T, i8> or
-                            same_types<T, i16> or
-                            same_types<T, i32> or
-                            same_types<T, i64> or
-                            same_types<T, i128>;
+  concept signed_integral =
+      same_types<type_traits::remove_cv_qualifiers<T>, i8> or
+      same_types<type_traits::remove_cv_qualifiers<T>, i16> or
+      same_types<type_traits::remove_cv_qualifiers<T>, i32> or
+      same_types<type_traits::remove_cv_qualifiers<T>, i64> or
+      same_types<type_traits::remove_cv_qualifiers<T>, i128>;
 
   template<typename T>
-  concept unsigned_integral = same_types<T, u8> or
-                              same_types<T, u16> or
-                              same_types<T, u32> or
-                              same_types<T, u64> or
-                              same_types<T, u128>;
+  concept unsigned_integral =
+      same_types<type_traits::remove_cv_qualifiers<T>, u8> or
+      same_types<type_traits::remove_cv_qualifiers<T>, u16> or
+      same_types<type_traits::remove_cv_qualifiers<T>, u32> or
+      same_types<type_traits::remove_cv_qualifiers<T>, u64> or
+      same_types<type_traits::remove_cv_qualifiers<T>, u128>;
 
   template<typename T>
   concept arithmetic = integral<T> or floating_point<T>;
 
   template<typename T>
-  concept fundamental = integral<T> or
-                        floating_point<T> or
-                        same_types<T, void> or
-                        same_types<T, nullptr_t>;
+  concept fundamental =
+      integral<T> or
+      floating_point<T> or
+      same_types<type_traits::remove_cv_qualifiers<T>, void> or
+      same_types<type_traits::remove_cv_qualifiers<T>, nullptr_t>;
 
   template<typename T>
   concept lvalue_reference = impl::lvalue_reference<T>;
@@ -129,6 +134,12 @@ export namespace ties::concepts {
   concept pointer = impl::pointer<type_traits::remove_cv_qualifiers<T>>;
 
   template<typename T>
+  concept function =
+      not lvalue_reference<T> and
+      not rvalue_reference<T> and
+      not const_qualified<const T>;
+
+  template<typename T>
   concept enum_object = __is_enum(T);
 
   template<typename T>
@@ -144,7 +155,10 @@ export namespace ties::concepts {
   concept class_object = __is_class(T);
 
   template<typename T>
-  concept function = not lvalue_reference<T> and not rvalue_reference<T> and not const_qualified<const T>;
+  concept object =
+      not function<T> and
+      not reference<T> and
+      not same_types<type_traits::remove_cv_qualifiers<T>, void>;
 
   template<typename T>
   concept array_with_unknown_bounds = impl::array_with_unknown_bounds<T>;
@@ -164,10 +178,10 @@ export namespace ties::concepts {
   concept standard_layouted = __is_standard_layout(T);
 
   template<typename T>
-  concept trivially_copyable = __is_trivially_copyable(T);
+  concept trivial = __is_trivial(T);
 
   template<typename T>
-  concept trivial = __is_trivial(T);
+  concept trivially_copyable = __is_trivially_copyable(T);
 
   template<typename T, typename... Args>
   concept constructible = __is_constructible(T, Args...);
@@ -181,7 +195,12 @@ export namespace ties::concepts {
   };
 
   template<typename T>
-  concept trivially_destructible = __has_trivial_destructor(T);
+  concept trivially_destructible =
+      not same_types<type_traits::remove_cv_qualifiers<T>, void> and
+      not array_with_unknown_bounds<T> and
+      not function<T> and
+      destructible<T> and
+      __has_trivial_destructor(T);
 
   template<typename T>
   concept default_constructible = constructible<T>;
