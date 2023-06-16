@@ -41,6 +41,14 @@ export namespace ties::test_types {
     }
   };
 
+  struct not_copy_constructible {
+    not_copy_constructible(const not_copy_constructible&) = delete;
+  };
+
+  struct not_move_constructible {
+    not_move_constructible(not_move_constructible&&) = delete;
+  };
+
   enum unscoped_enum { token };
   enum class scoped_enum { token };
 

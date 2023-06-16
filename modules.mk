@@ -29,7 +29,7 @@ $(OBJ)/ties.types.tuple.o: $(SRC)/types/tuple.cppm $(OBJ)/ties.types.o $(OBJ)/ti
 	@mkdir -p $(OBJ)
 	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
 
-$(OBJ)/ties.types.maybe.o: $(SRC)/types/maybe.cppm $(OBJ)/ties.types.o $(OBJ)/ties.memory.o $(OBJ)/ties.concepts.o $(OBJ)/ties.type_traits.o
+$(OBJ)/ties.types.maybe.o: $(SRC)/types/maybe.cppm $(OBJ)/ties.types.o $(OBJ)/ties.memory.o $(OBJ)/ties.concepts.o $(OBJ)/ties.type_traits.o $(OBJ)/ties.functional.monad.o
 	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
 	@mkdir -p $(OBJ)
 	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
