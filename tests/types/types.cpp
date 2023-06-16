@@ -3,6 +3,10 @@ import ties.types.tuple;
 import ties.concepts;
 import ties.functional.monad;
 
+#include <limits.h>
+
+static_assert(ties::types::I32_MIN == INT_MIN);
+
 int main()
 {
   using namespace ties::types;

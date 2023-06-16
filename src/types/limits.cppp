@@ -2,27 +2,28 @@ export module ties.types:limits;
 
 import :aliases;
 
+// https://users.cs.utah.edu/~regehr/papers/overflow12.pdf
 export namespace ties::types {
-  inline constexpr i8 I8_MIN      = -128;
-  inline constexpr i8 I8_MAX      =  127;
-  inline constexpr u8 U8_MIN      =  0;
-  inline constexpr u8 U8_MAX      =  255;
-  inline constexpr i16 I16_MIN    = -32'768;
-  inline constexpr i16 I16_MAX    =  32'767;
-  inline constexpr u16 U16_MIN    =  0;
-  inline constexpr u16 U16_MAX    =  65'535;
-  inline constexpr i32 I32_MIN    = -2'147'483'648;
-  inline constexpr i32 I32_MAX    =  2'147'483'647;
-  inline constexpr u32 U32_MIN    =  0;
-  inline constexpr u32 U32_MAX    =  4'294'967'295;
-  inline constexpr i64 I64_MIN    = -9'223'372'036'854'775'808;
-  inline constexpr i64 I64_MAX    =  9'223'372'036'854'775'807;
-  inline constexpr u64 U64_MIN    =  0;
-  inline constexpr u64 U64_MAX    =  18'446'744'073'709'551'615;
-  inline constexpr i128 I128_MIN  = -170'141'183'460'469'231'731'687'303'715'884'105'728;
-  inline constexpr i128 I128_MAX  =  170'141'183'460'469'231'731'687'303'715'884'105'727;
-  inline constexpr u128 U128_MIN  =  0;
-  inline constexpr u128 U128_MAX  =  340'282'366'920'938'463'463'374'607'431'768'211'455;
+  inline constexpr i8 I8_MIN      = -128_i8;
+  inline constexpr i8 I8_MAX      =  127_i8;
+  inline constexpr u8 U8_MIN      =  0_u8;
+  inline constexpr u8 U8_MAX      =  255_u8;
+  inline constexpr i16 I16_MIN    = -32'768_i16;
+  inline constexpr i16 I16_MAX    =  32'767_i16;
+  inline constexpr u16 U16_MIN    =  0_u16;
+  inline constexpr u16 U16_MAX    =  65'535_u16;
+  inline constexpr i32 I32_MIN    = -2'147'483'648/*_i32*/;
+  inline constexpr i32 I32_MAX    =  2'147'483'647_i32;
+  inline constexpr u32 U32_MIN    =  0_u32;
+  inline constexpr u32 U32_MAX    =  4'294'967'295_u32;
+  inline constexpr i64 I64_MIN    = -9'223'372'036'854'775'807_i64;
+  inline constexpr i64 I64_MAX    =  9'223'372'036'854'775'807_i64;
+  inline constexpr u64 U64_MIN    =  0_u64;
+  inline constexpr u64 U64_MAX    =  18'446'744'073'709'551'615_u64;
+  inline constexpr i128 I128_MIN  =  ~i128(-1);// -170'141'183'460'469'231'731'687'303'715'884'105'728_i128;
+  inline constexpr i128 I128_MAX  =  ~I128_MIN;// 170'141'183'460'469'231'731'687'303'715'884'105'727_i128;
+  inline constexpr u128 U128_MIN  =  0_u128;
+  inline constexpr u128 U128_MAX  =  ~U128_MIN;// 340'282'366'920'938'463'463'374'607'431'768'211'455_u128;
 
   template<typename T>
   struct limits {
