@@ -184,22 +184,33 @@ export namespace ties::types {
 
     [[nodiscard]] constexpr T& join() & noexcept
     {
-      return m_storage.value;
+      return m_storage.value.value;
     }
 
     [[nodiscard]] constexpr const T& join() const & noexcept
     {
-      return m_storage.value;
+      return m_storage.value.value;
     }
 
     [[nodiscard]] constexpr T&& join() && noexcept
     {
-      return m_storage.value;
+      return m_storage.value.value;
     }
 
     [[nodiscard]] constexpr const T&& join() const && noexcept
     {
-      return m_storage.value;
+      return m_storage.value.value;
+    }
+
+    template<typename Func>
+    [[nodiscard]] constexpr auto chain(Func func) const noexcept
+        -> decltype(func(join()))
+    {
+      if (m_storage.valid) {
+        return func(m_storage.value.value);
+      } else {
+        return none;
+      }
     }
   };
 }
@@ -211,6 +222,29 @@ export namespace ties::functional::monad {
     static constexpr auto make(Args&&... args) noexcept
     {
       return types::maybe<T>(memory::forward<Args>(args)...);
+    }
+  };
+
+  template<typename T>
+  struct join_trait<types::maybe<T>> {
+    template<typename U = T>
+    static constexpr auto join(const types::maybe<U>& mb) noexcept
+    {
+      return mb.join();
+    }
+  };
+
+  template<typename T>
+  struct chain_trait<types::maybe<T>> {
+    template<typename U = T, typename Func>
+    static constexpr auto chain(const types::maybe<U>& mb, Func func) noexcept
+        -> decltype(func(mb.join()))
+    {
+      if (mb) {
+        return mb.chain(func);
+      } else {
+        return types::none;
+      }
     }
   };
 }

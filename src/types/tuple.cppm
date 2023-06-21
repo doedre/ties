@@ -92,14 +92,14 @@ namespace ties::types::impl {
 
     template<usize _Index>
     requires (_Index == Index)
-    constexpr T&& get() && noexcept
+    [[nodiscard]] constexpr T&& get() && noexcept
     {
       return value;
     }
 
     template<usize _Index>
     requires (_Index == Index)
-    constexpr const T&& get() const && noexcept
+    [[nodiscard]] constexpr const T&& get() const && noexcept
     {
       return value;
     }

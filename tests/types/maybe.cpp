@@ -1,5 +1,6 @@
 import ties.type_traits;
 import ties.concepts;
+import ties.math;
 import ties.memory;
 import ties.types;
 import ties.types.maybe;
@@ -24,9 +25,11 @@ static_assert(not mb_empty);
 constexpr types::maybe<types::i32> mb_i32 = 32;
 static_assert(mb_i32);
 
-constexpr auto mb_made = monad::make<maybe>(32_i32);
+constexpr auto mb_made = monad::make<maybe>(-32_i32);
 static_assert(concepts::same_types<decltype(mb_made)::value_type, i32>);
 static_assert(mb_made);
+static_assert(monad::join(mb_made) == -32_i32);
+static_assert(monad::chain(mb_made, math::abs<i32>) == 32_i32);
 
 constexpr auto mb_made_none = monad::make<maybe<int>>(none);
 static_assert(not mb_made_none);

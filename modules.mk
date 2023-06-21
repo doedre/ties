@@ -2,6 +2,9 @@ ties_module_names := \
 		concepts \
 		functional \
 		math \
+		meta.concepts \
+		meta.cast \
+		meta.types \
 		memory \
 		type_traits \
 		types \
@@ -67,6 +70,36 @@ $(OBJ)/ties.memory.o: $(SRC)/memory/memory.cppm $(OBJ)/ties.type_traits.o $(OBJ)
 	@mkdir -p $(OBJ)
 	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
 
+$(OBJ)/ties.meta.types.o: $(SRC)/meta/types/types.cppm
+	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
+	@mkdir -p $(OBJ)
+	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
+
+$(OBJ)/ties.meta.cast-references.o: $(SRC)/meta/cast/references.cppp $(OBJ)/ties.meta.types.o
+	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
+	@mkdir -p $(OBJ)
+	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
+
+$(OBJ)/ties.meta.cast-cv_qualifiers.o: $(SRC)/meta/cast/cv_qualifiers.cppp
+	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
+	@mkdir -p $(OBJ)
+	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
+
+$(OBJ)/ties.meta.cast-pointers.o: $(SRC)/meta/cast/pointers.cppp $(OBJ)/ties.meta.types.o
+	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
+	@mkdir -p $(OBJ)
+	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
+
+$(OBJ)/ties.meta.cast.o: $(SRC)/meta/cast/cast.cppm $(OBJ)/ties.meta.cast-references.o $(OBJ)/ties.meta.cast-cv_qualifiers.o $(OBJ)/ties.meta.cast-pointers.o
+	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
+	@mkdir -p $(OBJ)
+	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
+
+$(OBJ)/ties.meta.concepts.o: $(SRC)/meta/concepts/concepts.cppm $(OBJ)/ties.meta.cast.o $(OBJ)/ties.types.o
+	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
+	@mkdir -p $(OBJ)
+	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
+
 $(OBJ)/ties.test_types.o: $(TEST)/test_types.cppm $(OBJ)/ties.types.o
 	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
 	@mkdir -p $(OBJ)
@@ -87,14 +120,14 @@ $(BIN)/$(TEST)/math/math: $(TEST)/math/math.cpp $(OBJ)/ties.math.o
 	@mkdir -p $(BIN)/$(TEST)/math
 	@$(CXX) $(COMPILE_ARGS) $< -o $@
 
-$(BIN)/$(TEST)/concepts/concepts: $(TEST)/concepts/static/concepts.cpp $(OBJ)/ties.concepts.o $(OBJ)/ties.test_types.o
+$(BIN)/$(TEST)/meta/concepts/concepts_static: $(TEST)/meta/concepts/concepts_static.cpp $(OBJ)/ties.meta.concepts.o $(OBJ)/ties.test_types.o
 	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
-	@mkdir -p $(BIN)/$(TEST)/concepts
+	@mkdir -p $(BIN)/$(TEST)/meta/concepts
 	@$(CXX) $(COMPILE_ARGS) $< -o $@
 
-$(BIN)/$(TEST)/type_traits/type_traits: $(TEST)/type_traits/static/type_traits.cpp $(OBJ)/ties.test_types.o $(OBJ)/ties.concepts.o $(BIN)/$(TEST)/concepts/concepts
+$(BIN)/$(TEST)/meta/cast/cast_static: $(TEST)/meta/cast/cast_static.cpp $(OBJ)/ties.meta.concepts.o $(BIN)/$(TEST)/meta/concepts/concepts_static
 	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
-	@mkdir -p $(BIN)/$(TEST)/type_traits
+	@mkdir -p $(BIN)/$(TEST)/meta/cast
 	@$(CXX) $(COMPILE_ARGS) $< -o $@
 
 $(BIN)/$(TEST)/functional/functor: $(TEST)/functional/functor.cpp $(OBJ)/ties.functional.o
