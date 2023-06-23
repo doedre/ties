@@ -1,7 +1,7 @@
 export module ties.concepts;
 
 import ties.types;
-import ties.type_traits;
+import ties.meta;
 
 using namespace ties::types;
 
@@ -72,38 +72,38 @@ export namespace ties::concepts {
 
   template<typename T>
   concept integral =
-      same_types<type_traits::remove_cv_qualifiers<T>, i8> or
-      same_types<type_traits::remove_cv_qualifiers<T>, u8> or
-      same_types<type_traits::remove_cv_qualifiers<T>, i16> or
-      same_types<type_traits::remove_cv_qualifiers<T>, u16> or
-      same_types<type_traits::remove_cv_qualifiers<T>, i32> or
-      same_types<type_traits::remove_cv_qualifiers<T>, u32> or
-      same_types<type_traits::remove_cv_qualifiers<T>, i64> or
-      same_types<type_traits::remove_cv_qualifiers<T>, u64> or
-      same_types<type_traits::remove_cv_qualifiers<T>, i128> or
-      same_types<type_traits::remove_cv_qualifiers<T>, u128>;
+      same_types<meta::remove_cv_qualifiers<T>, i8> or
+      same_types<meta::remove_cv_qualifiers<T>, u8> or
+      same_types<meta::remove_cv_qualifiers<T>, i16> or
+      same_types<meta::remove_cv_qualifiers<T>, u16> or
+      same_types<meta::remove_cv_qualifiers<T>, i32> or
+      same_types<meta::remove_cv_qualifiers<T>, u32> or
+      same_types<meta::remove_cv_qualifiers<T>, i64> or
+      same_types<meta::remove_cv_qualifiers<T>, u64> or
+      same_types<meta::remove_cv_qualifiers<T>, i128> or
+      same_types<meta::remove_cv_qualifiers<T>, u128>;
 
   template<typename T>
   concept floating_point =
-      same_types<type_traits::remove_cv_qualifiers<T>, f32> or
-      same_types<type_traits::remove_cv_qualifiers<T>, f64> or
-      same_types<type_traits::remove_cv_qualifiers<T>, f128>;
+      same_types<meta::remove_cv_qualifiers<T>, f32> or
+      same_types<meta::remove_cv_qualifiers<T>, f64> or
+      same_types<meta::remove_cv_qualifiers<T>, f128>;
 
   template<typename T>
   concept signed_integral =
-      same_types<type_traits::remove_cv_qualifiers<T>, i8> or
-      same_types<type_traits::remove_cv_qualifiers<T>, i16> or
-      same_types<type_traits::remove_cv_qualifiers<T>, i32> or
-      same_types<type_traits::remove_cv_qualifiers<T>, i64> or
-      same_types<type_traits::remove_cv_qualifiers<T>, i128>;
+      same_types<meta::remove_cv_qualifiers<T>, i8> or
+      same_types<meta::remove_cv_qualifiers<T>, i16> or
+      same_types<meta::remove_cv_qualifiers<T>, i32> or
+      same_types<meta::remove_cv_qualifiers<T>, i64> or
+      same_types<meta::remove_cv_qualifiers<T>, i128>;
 
   template<typename T>
   concept unsigned_integral =
-      same_types<type_traits::remove_cv_qualifiers<T>, u8> or
-      same_types<type_traits::remove_cv_qualifiers<T>, u16> or
-      same_types<type_traits::remove_cv_qualifiers<T>, u32> or
-      same_types<type_traits::remove_cv_qualifiers<T>, u64> or
-      same_types<type_traits::remove_cv_qualifiers<T>, u128>;
+      same_types<meta::remove_cv_qualifiers<T>, u8> or
+      same_types<meta::remove_cv_qualifiers<T>, u16> or
+      same_types<meta::remove_cv_qualifiers<T>, u32> or
+      same_types<meta::remove_cv_qualifiers<T>, u64> or
+      same_types<meta::remove_cv_qualifiers<T>, u128>;
 
   template<typename T>
   concept arithmetic = integral<T> or floating_point<T>;
@@ -112,8 +112,8 @@ export namespace ties::concepts {
   concept fundamental =
       integral<T> or
       floating_point<T> or
-      same_types<type_traits::remove_cv_qualifiers<T>, void> or
-      same_types<type_traits::remove_cv_qualifiers<T>, nullptr_t>;
+      same_types<meta::remove_cv_qualifiers<T>, void> or
+      same_types<meta::remove_cv_qualifiers<T>, nullptr_t>;
 
   template<typename T>
   concept lvalue_reference = impl::lvalue_reference<T>;
@@ -131,7 +131,7 @@ export namespace ties::concepts {
   concept volatile_qualified = impl::volatile_qualified<T>;
 
   template<typename T>
-  concept pointer = impl::pointer<type_traits::remove_cv_qualifiers<T>>;
+  concept pointer = impl::pointer<meta::remove_cv_qualifiers<T>>;
 
   template<typename T>
   concept function =
@@ -158,7 +158,7 @@ export namespace ties::concepts {
   concept object =
       not function<T> and
       not reference<T> and
-      not same_types<type_traits::remove_cv_qualifiers<T>, void>;
+      not same_types<meta::remove_cv_qualifiers<T>, void>;
 
   template<typename T>
   concept array_with_unknown_bounds = impl::array_with_unknown_bounds<T>;
@@ -170,7 +170,7 @@ export namespace ties::concepts {
   concept array = array_with_unknown_bounds<T> or array_with_known_bounds<T>;
 
   template<typename T>
-  concept incomplete = requires(type_traits::remove_cv_qualifiers<T> val) {
+  concept incomplete = requires(meta::remove_cv_qualifiers<T> val) {
     val = val;   // should fail if incomplete
   };
 
@@ -196,7 +196,7 @@ export namespace ties::concepts {
 
   template<typename T>
   concept trivially_destructible =
-      not same_types<type_traits::remove_cv_qualifiers<T>, void> and
+      not same_types<meta::remove_cv_qualifiers<T>, void> and
       not array_with_unknown_bounds<T> and
       not function<T> and
       destructible<T> and
@@ -209,18 +209,18 @@ export namespace ties::concepts {
   concept trivially_default_constructible = trivially_constructible<T>;
 
   template<typename T>
-  concept copy_constructible = constructible<T, type_traits::add_lvalue_reference<const T>>;
+  concept copy_constructible = constructible<T, meta::add_lvalue_reference<const T>>;
 
   template<typename T>
   concept trivially_copy_constructible =
-      trivially_constructible<T, type_traits::add_lvalue_reference<const T>>;
+      trivially_constructible<T, meta::add_lvalue_reference<const T>>;
 
   template<typename T>
-  concept move_constructible = constructible<T, type_traits::add_rvalue_reference<T>>;
+  concept move_constructible = constructible<T, meta::add_rvalue_reference<T>>;
 
   template<typename T>
   concept trivially_move_constructible =
-      trivially_constructible<T, type_traits::add_rvalue_reference<T>>;
+      trivially_constructible<T, meta::add_rvalue_reference<T>>;
 
   template<typename T, typename U>
   concept assignable = __is_assignable(T, U);
@@ -230,18 +230,18 @@ export namespace ties::concepts {
 
   template<typename T>
   concept copy_assignable =
-      assignable<type_traits::add_lvalue_reference<T>, type_traits::add_lvalue_reference<const T>>;
+      assignable<meta::add_lvalue_reference<T>, meta::add_lvalue_reference<const T>>;
 
   template<typename T>
   concept trivially_copy_assignable =
-      trivially_assignable<type_traits::add_lvalue_reference<T>, type_traits::add_lvalue_reference<const T>>;
+      trivially_assignable<meta::add_lvalue_reference<T>, meta::add_lvalue_reference<const T>>;
 
   template<typename T>
   concept move_assignable =
-      assignable<type_traits::add_lvalue_reference<T>, type_traits::add_rvalue_reference<T>>;
+      assignable<meta::add_lvalue_reference<T>, meta::add_rvalue_reference<T>>;
 
   template<typename T>
   concept trivially_move_assignable =
-      trivially_assignable<type_traits::add_lvalue_reference<T>, type_traits::add_rvalue_reference<T>>;
+      trivially_assignable<meta::add_lvalue_reference<T>, meta::add_rvalue_reference<T>>;
 }
 

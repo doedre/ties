@@ -1,6 +1,6 @@
-export module ties.meta.types;
+export module ties.meta:static_constant_type;
 
-export namespace ties::meta::types {
+export namespace ties::meta {
   template<typename T, T val>
   struct static_constant_type {
     static constexpr T value = val;
@@ -19,7 +19,5 @@ export namespace ties::meta::types {
 
   using true_type = static_constant_type<bool, true>;
   using false_type = static_constant_type<bool, false>;
-
-  template<typename...>
-  using void_t = void;
 }
+

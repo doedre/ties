@@ -1,4 +1,4 @@
-import ties.type_traits;
+import ties.meta;
 import ties.concepts;
 import ties.test_types;
 

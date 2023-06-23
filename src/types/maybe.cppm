@@ -1,7 +1,7 @@
 export module ties.types.maybe;
 
 import ties.concepts;
-import ties.type_traits;
+import ties.meta;
 import ties.memory;
 import ties.functional.monad;
 
@@ -127,7 +127,7 @@ export namespace ties::types {
       concepts::destructible<T> and
       not concepts::reference<T> and
       not concepts::array<T> and
-      not concepts::same_types<type_traits::remove_cv_qualifiers<T>, none_t>
+      not concepts::same_types<meta::remove_cv_qualifiers<T>, none_t>
   )
   class maybe {
     impl::maybe_storage<T> m_storage;
@@ -154,13 +154,13 @@ export namespace ties::types {
     { }
 
     maybe(maybe&& other) noexcept :
-        m_storage { memory::rvalue_cast(other) }
+        m_storage { memory::move(other) }
     { }
 
     template<typename U = T>
     requires (
-        concepts::constructible<T, type_traits::add_rvalue_reference<U>> and
-        concepts::convertible_types<type_traits::add_rvalue_reference<U>, T>
+        concepts::constructible<T, meta::add_rvalue_reference<U>> and
+        concepts::convertible_types<meta::add_rvalue_reference<U>, T>
     )
     constexpr maybe(U&& val) noexcept :
         m_storage { memory::forward<U>(val) }
@@ -168,8 +168,8 @@ export namespace ties::types {
 
     template<typename U = T>
     requires (
-        concepts::constructible<T, type_traits::add_rvalue_reference<U>> and
-        not concepts::convertible_types<type_traits::add_rvalue_reference<U>, T>
+        concepts::constructible<T, meta::add_rvalue_reference<U>> and
+        not concepts::convertible_types<meta::add_rvalue_reference<U>, T>
     )
     explicit constexpr maybe(U&& val) noexcept :
         m_storage { memory::forward<U>(val) }

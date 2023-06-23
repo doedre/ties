@@ -3,7 +3,7 @@ export module ties.types.tuple;
 import ties.types;
 import ties.concepts;
 import ties.memory;
-import ties.type_traits;
+import ties.meta;
 import ties.functional.monad;
 
 export namespace ties::types {
@@ -29,7 +29,7 @@ namespace ties::types::impl {
 
   template<typename T, T Offset, T... Lhs, T... Rhs>
   struct merge<
-      type_traits::static_constant_type<T, Offset>,
+      meta::static_constant_type<T, Offset>,
       integer_list<T, Lhs...>,
       integer_list<T, Rhs...>
   > {
@@ -38,8 +38,8 @@ namespace ties::types::impl {
 
   template<typename T, typename Num>
   struct log_make_sequence {
-    using left = type_traits::static_constant_type<T, Num::value / 2>;
-    using right = type_traits::static_constant_type<T, Num::value - left::value>;
+    using left = meta::static_constant_type<T, Num::value / 2>;
+    using right = meta::static_constant_type<T, Num::value - left::value>;
     using type = typename merge<
         left,
         typename log_make_sequence<T, left>::type,
@@ -48,12 +48,12 @@ namespace ties::types::impl {
   };
 
   template<typename T>
-  struct log_make_sequence<T, type_traits::static_constant_type<T, 0>> {
+  struct log_make_sequence<T, meta::static_constant_type<T, 0>> {
     using type = integer_list<T>;
   };
 
   template<typename T>
-  struct log_make_sequence<T, type_traits::static_constant_type<T, 1>> {
+  struct log_make_sequence<T, meta::static_constant_type<T, 1>> {
     using type = integer_list<T, 0>;
   };
 }
@@ -62,7 +62,7 @@ export namespace ties::types {
   template<typename T, T Len>
   requires concepts::integral<T>
   using integer_sequence =
-      typename impl::log_make_sequence<T, type_traits::static_constant_type<T, Len>>::type;
+      typename impl::log_make_sequence<T, meta::static_constant_type<T, Len>>::type;
 
   template<usize Len>
   using index_sequence = integer_sequence<usize, Len>;

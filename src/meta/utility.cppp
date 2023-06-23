@@ -1,0 +1,6 @@
+export module ties.meta:utility;
+
+export namespace ties::meta {
+  template<typename...>
+  using void_t = void;
+}
