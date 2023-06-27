@@ -71,6 +71,21 @@ $(OBJ)/ties.memory.o: $(SRC)/memory/memory.cppm $(OBJ)/ties.meta.o $(OBJ)/ties.c
 	@mkdir -p $(OBJ)
 	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
 
+$(OBJ)/ties.meta-id.o: $(SRC)/meta/id.cppp
+	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
+	@mkdir -p $(OBJ)
+	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
+
+$(OBJ)/ties.meta-typelist.o: $(SRC)/meta/typelist.cppp $(OBJ)/ties.types.o
+	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
+	@mkdir -p $(OBJ)
+	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
+
+$(OBJ)/ties.meta-invocable.o: $(SRC)/meta/invocable.cppp $(OBJ)/ties.meta-id.o
+	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
+	@mkdir -p $(OBJ)
+	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
+
 $(OBJ)/ties.meta-static_constant_type.o: $(SRC)/meta/static_constant_type.cppp
 	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
 	@mkdir -p $(OBJ)
@@ -86,7 +101,7 @@ $(OBJ)/ties.meta-traits.o: $(SRC)/meta/traits.cppp $(OBJ)/ties.meta-utility.o $(
 	@mkdir -p $(OBJ)
 	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
 
-$(OBJ)/ties.meta.o: $(SRC)/meta/meta.cppm $(OBJ)/ties.meta-traits.o $(OBJ)/ties.meta-static_constant_type.o $(OBJ)/ties.meta-utility.o
+$(OBJ)/ties.meta.o: $(SRC)/meta/meta.cppm $(OBJ)/ties.meta-traits.o $(OBJ)/ties.meta-static_constant_type.o $(OBJ)/ties.meta-utility.o $(OBJ)/ties.meta-id.o $(OBJ)/ties.meta-typelist.o $(OBJ)/ties.meta-invocable.o
 	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
 	@mkdir -p $(OBJ)
 	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@

@@ -1,0 +1,29 @@
+export module ties.meta:invocable;
+
+import :id;
+
+export namespace ties::meta {
+  template<typename T, typename... Args>
+  using invoke = typename T::template invoke<Args...>;
+
+  template<typename... Ts>
+  struct compose { };
+
+  template<typename T>
+  struct compose<T> {
+    template<typename... Ts>
+    using invoke = invoke<T, Ts...>;
+  };
+
+  template<typename T0, typename... Ts>
+  struct compose<T0, Ts...> {
+    template<typename... Xs>
+    using invoke = invoke<T0, invoke<compose<Ts...>, Xs...>>;
+  };
+
+  template<template<typename...> typename T>
+  struct quote {
+    template<typename... Ts>
+    using invoke = eval<T<Ts...>>;
+  };
+}

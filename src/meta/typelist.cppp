@@ -1,0 +1,14 @@
+export module ties.meta:typelist;
+
+import ties.types;
+
+export namespace ties::meta {
+  template<typename... Ts>
+  struct typelist {
+    using type = typelist;
+    static consteval types::usize len() noexcept
+    {
+      return sizeof...(Ts);
+    }
+  };
+}

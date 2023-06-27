@@ -1,0 +1,11 @@
+export module ties.meta:id;
+
+export namespace ties::meta {
+  template<typename T>
+  struct id {
+    using type = T;
+  };
+
+  template<typename T>
+  using eval = typename T::type;
+}

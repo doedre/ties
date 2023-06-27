@@ -39,6 +39,18 @@ static_assert(concepts::pointer<meta::add_pointer<int&>>);
 static_assert(concepts::pointer<meta::add_pointer<int&&>>);
 static_assert(concepts::pointer<meta::add_pointer<void>>);
 
+struct ac {
+  template<typename... Ts>
+  using invoke = void;
+};
+
+static_assert(concepts::same_types<meta::invoke<ac, char, int>, void>);
+
+template<typename... Ts>
+struct nc : meta::id<void> { };
+
+static_assert(concepts::same_types<meta::invoke<meta::quote<nc>, char, int>, void>);
+
 int main()
 {
   return 0;
