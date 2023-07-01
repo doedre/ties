@@ -2,6 +2,7 @@ ties_module_names := \
 		concepts \
 		functional \
 		math \
+		math.checked \
 		meta \
 		memory \
 		types \
@@ -62,7 +63,11 @@ $(OBJ)/ties.functional.monad.o: $(SRC)/functional/monad.cppm $(OBJ)/ties.memory.
 	@mkdir -p $(OBJ)
 	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
 
-$(OBJ)/ties.math.o: $(SRC)/math/math.cppm $(OBJ)/ties.types.o $(OBJ)/ties.concepts.o $(OBJ)/ties.types.tuple.o $(OBJ)/ties.types.maybe.o
+$(OBJ)/ties.math.o: $(SRC)/math/math.cppm $(OBJ)/ties.types.o $(OBJ)/ties.concepts.o $(OBJ)/ties.types.tuple.o
+	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
+	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
+
+$(OBJ)/ties.math.checked.o: $(SRC)/math/checked.cppm $(OBJ)/ties.types.o $(OBJ)/ties.concepts.o $(OBJ)/ties.types.tuple.o $(OBJ)/ties.types.maybe.o
 	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
 	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
 

@@ -175,7 +175,7 @@ export namespace ties::types {
         m_storage { memory::forward<U>(val) }
     { }
 
-    constexpr ~maybe() = default;
+    constexpr ~maybe() noexcept = default;
 
     [[nodiscard]] constexpr operator bool() const noexcept
     {
@@ -215,16 +215,16 @@ export namespace ties::types {
   };
 }
 
-export namespace ties::functional::monad {
-  template<typename T>
-  struct make_trait<types::maybe<T>> {
-    template<typename... Args>
-    static constexpr auto make(Args&&... args) noexcept
-    {
-      return types::maybe<T>(memory::forward<Args>(args)...);
-    }
-  };
+export template<typename T>
+struct ties::functional::monad::make_trait<ties::types::maybe<T>> {
+  template<typename... Args>
+  static constexpr auto make(Args&&... args) noexcept
+  {
+    return types::maybe<T>(ties::memory::forward<Args>(args)...);
+  }
+};
 
+export namespace ties::functional::monad {
   template<typename T>
   struct join_trait<types::maybe<T>> {
     template<typename U = T>
@@ -248,3 +248,4 @@ export namespace ties::functional::monad {
     }
   };
 }
+

@@ -1,4 +1,5 @@
 import ties.math;
+import ties.math.checked;
 
 int main()
 {
@@ -41,6 +42,7 @@ int main()
     static_assert(res.get<0>() == ~0_u32);
     static_assert(res.get<1>() == true);
   }
+  static_assert(not ties::math::checked::abs(limits<i64>::min));
 
   return 0;
 }
