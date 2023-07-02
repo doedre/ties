@@ -19,108 +19,7 @@ export namespace ties::types {
   };
 
   inline constexpr none_t none { none_t::construct::token };
-}
 
-namespace ties::types::impl {
-  template<typename T>
-  union maybe_uninitialized;
-
-  template<typename T>
-  requires concepts::trivially_destructible<T>
-  union maybe_uninitialized<T> {
-    T value;
-    none_t empty;
-
-    constexpr maybe_uninitialized() noexcept :
-        empty(none)
-    { }
-
-    constexpr maybe_uninitialized(none_t) noexcept :
-        empty(none)
-    { }
-
-    template<typename... Args>
-    constexpr maybe_uninitialized(Args&&... args) noexcept :
-        value { memory::forward<Args>(args)... }
-    { }
-  };
-
-  template<typename T>
-  requires (not concepts::trivially_destructible<T>)
-  union maybe_uninitialized<T> {
-    T value;
-    none_t empty;
-
-    constexpr maybe_uninitialized() noexcept :
-        empty(none)
-    { }
-
-    constexpr maybe_uninitialized(none_t) noexcept :
-        empty(none)
-    { }
-
-    template<typename... Args>
-    constexpr maybe_uninitialized(Args&&... args) noexcept :
-        value { memory::forward<Args>(args)... }
-    { }
-
-    constexpr ~maybe_uninitialized() noexcept { }
-  };
-
-  template<typename T>
-  struct maybe_storage;
-
-  template<typename T>
-  requires concepts::trivially_destructible<T>
-  struct maybe_storage<T> {
-    maybe_uninitialized<T> value;
-    bool valid;
-
-    constexpr maybe_storage() noexcept = default;
-
-    constexpr maybe_storage(none_t) noexcept :
-        value { none },
-        valid { false }
-    { }
-
-    template<typename... Args>
-    constexpr maybe_storage(Args&&... args) noexcept :
-        value { memory::forward<Args>(args)... },
-        valid { true }
-    { }
-
-    constexpr ~maybe_storage() noexcept = default;
-  };
-
-  template<typename T>
-  requires (not concepts::trivially_destructible<T>)
-  struct maybe_storage<T> {
-    maybe_uninitialized<T> value;
-    bool valid;
-
-    constexpr maybe_storage() noexcept = default;
-
-    constexpr maybe_storage(none_t) noexcept :
-        value { none },
-        valid { false }
-    { }
-
-    template<typename... Args>
-    constexpr maybe_storage(Args&&... args) noexcept :
-        value { memory::forward<Args>(args)... },
-        valid { true }
-    { }
-
-    ~maybe_storage() noexcept
-    {
-      if (valid) {
-        value.~T();
-      }
-    }
-  };
-}
-
-export namespace ties::types {
   // http://www.club.cc.cmu.edu/%7Eajo/disseminate/2017-02-15-Optional-From-Scratch.pdf
   template<typename T>
   requires (
@@ -130,84 +29,171 @@ export namespace ties::types {
       not concepts::same_types<meta::remove_cv_qualifiers<T>, none_t>
   )
   class maybe {
-    impl::maybe_storage<T> m_storage;
-
    public:
     using value_type = T;
     using none_type = none_t;
 
+   private:
+    union {
+      none_type m_empty;
+      meta::remove_const<value_type> m_value;
+    };
+    bool m_engaged;
+
+   public:
+
     constexpr maybe() noexcept :
-        m_storage { none }
+        m_empty { none },
+        m_engaged { false }
     { }
 
     constexpr maybe(none_type) noexcept :
-        m_storage { none }
+        m_empty { none },
+        m_engaged { false }
     { }
-
-    maybe(const maybe& other)
-    requires (not concepts::copy_constructible<T>)
-    = delete;
 
     constexpr maybe(const maybe& other) noexcept
-    requires concepts::copy_constructible<T> :
-        m_storage { other.m_storage }
-    { }
+    requires (
+        concepts::copy_constructible<T>
+        and concepts::trivially_copy_constructible<T>
+    ) = default;
 
-    maybe(maybe&& other) noexcept :
-        m_storage { memory::move(other) }
-    { }
+    constexpr maybe(const maybe& other) noexcept
+    requires concepts::copy_constructible<T>
+    {
+      if (other.m_engaged) {
+        m_value = other.m_value;
+        m_engaged = true;
+      }
+    }
+
+    constexpr maybe(maybe&& other) noexcept
+    requires (
+        concepts::move_constructible<T>
+        and concepts::trivially_move_constructible<T>
+    ) = default;
+
+    constexpr maybe(maybe&& other) noexcept
+    requires concepts::move_constructible<T>
+    {
+      if (other.m_engaged) {
+        m_value = memory::move(other.m_value);
+        m_engaged = true;
+      }
+    }
+
+    constexpr maybe& operator=(const maybe&)
+    requires (
+        concepts::copy_constructible<T>
+        and concepts::copy_assignable<T>
+        and concepts::trivially_copy_assignable<T>
+    ) = default;
+
+    constexpr maybe& operator=(const maybe& other)
+    requires (
+        concepts::copy_constructible<T>
+        and concepts::copy_assignable<T>
+    )
+    {
+      if (m_engaged && other.m_engaged) {
+        m_value = other.m_value;
+      } else if (other.m_engaged) {
+        m_value = other.m_value;
+        m_engaged = true;
+      } else {
+        m_value.~T();
+        m_engaged = false;
+      }
+      return *this;
+    }
+
+    constexpr maybe& operator=(maybe&&)
+    requires (
+        concepts::move_constructible<T>
+        and concepts::move_assignable<T>
+        and concepts::trivially_move_assignable<T>
+    ) = default;
+
+    constexpr maybe& operator=(maybe&& other)
+    requires (
+        concepts::move_constructible<T>
+        and concepts::move_assignable<T>
+    )
+    {
+      if (m_engaged && other.m_engaged) {
+        m_value = memory::move(other.m_value);
+      } else if (other.m_engaged) {
+        m_value = memory::move(other.m_value);
+        m_engaged = true;
+      } else {
+        m_value.~T();
+        m_engaged = false;
+      }
+      return *this;
+    }
 
     template<typename U = T>
     requires (
-        concepts::constructible<T, meta::add_rvalue_reference<U>> and
-        concepts::convertible_types<meta::add_rvalue_reference<U>, T>
+        concepts::constructible<T, meta::add_rvalue_reference<U>>
+        and concepts::convertible_types<meta::add_rvalue_reference<U>, T>
     )
     constexpr maybe(U&& val) noexcept :
-        m_storage { memory::forward<U>(val) }
+        m_value { memory::forward<U>(val) },
+        m_engaged { true }
     { }
 
     template<typename U = T>
     requires (
-        concepts::constructible<T, meta::add_rvalue_reference<U>> and
-        not concepts::convertible_types<meta::add_rvalue_reference<U>, T>
+        concepts::constructible<T, meta::add_rvalue_reference<U>>
+        and not concepts::convertible_types<meta::add_rvalue_reference<U>, T>
     )
     explicit constexpr maybe(U&& val) noexcept :
-        m_storage { memory::forward<U>(val) }
+        m_value { memory::forward<U>(val) },
+        m_engaged { true }
     { }
 
-    constexpr ~maybe() noexcept = default;
+    ~maybe() noexcept
+    requires concepts::trivially_destructible<T>
+    = default;
+
+    constexpr ~maybe() noexcept
+    {
+      if (m_engaged) {
+        m_value.~T();
+      }
+    }
 
     [[nodiscard]] constexpr operator bool() const noexcept
     {
-      return m_storage.valid;
+      return m_engaged;
     }
 
     [[nodiscard]] constexpr T& join() & noexcept
     {
-      return m_storage.value.value;
+      return m_value;
     }
 
     [[nodiscard]] constexpr const T& join() const & noexcept
     {
-      return m_storage.value.value;
+      return m_value;
     }
 
     [[nodiscard]] constexpr T&& join() && noexcept
     {
-      return m_storage.value.value;
+      return m_value;
     }
 
     [[nodiscard]] constexpr const T&& join() const && noexcept
     {
-      return m_storage.value.value;
+      return m_value;
     }
 
     template<typename Func>
     [[nodiscard]] constexpr auto chain(Func func) const noexcept
         -> decltype(func(join()))
     {
-      if (m_storage.valid) {
-        return func(m_storage.value.value);
+      if (m_engaged) {
+        return func(m_value);
       } else {
         return none;
       }
