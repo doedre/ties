@@ -133,21 +133,9 @@ export namespace ties::types {
     }
 
     template<typename U = T>
-    requires (
-        concepts::constructible<T, meta::add_rvalue_reference<U>>
-        and concepts::convertible_types<meta::add_rvalue_reference<U>, T>
-    )
+    requires concepts::constructible<T, meta::add_rvalue_reference<U>>
+    explicit(not concepts::convertible_types<T, meta::add_rvalue_reference<U>>)
     constexpr maybe(U&& val) noexcept :
-        m_value { memory::forward<U>(val) },
-        m_engaged { true }
-    { }
-
-    template<typename U = T>
-    requires (
-        concepts::constructible<T, meta::add_rvalue_reference<U>>
-        and not concepts::convertible_types<meta::add_rvalue_reference<U>, T>
-    )
-    explicit constexpr maybe(U&& val) noexcept :
         m_value { memory::forward<U>(val) },
         m_engaged { true }
     { }
