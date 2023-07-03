@@ -140,6 +140,40 @@ export namespace ties::types {
         m_engaged { true }
     { }
 
+    template<typename U>
+    requires (
+        not concepts::same_types<T, U>
+        and concepts::constructible<T, meta::add_const_qualifier<meta::add_lvalue_reference<U>>>
+    )
+    explicit(not concepts::convertible_types<T, meta::add_const_qualifier<meta::add_lvalue_reference<U>>>)
+    constexpr maybe(const maybe<U>& other) noexcept
+    {
+      if (other) {
+        m_value = other.join();
+        m_engaged = true;
+      } else {
+        m_empty = none;
+        m_engaged = false;
+      }
+    }
+
+    template<typename U>
+    requires (
+        not concepts::same_types<T, U>
+        and concepts::constructible<T, meta::add_rvalue_reference<U>>
+    )
+    explicit(not concepts::convertible_types<T, meta::add_rvalue_reference<U>>)
+    constexpr maybe(maybe<U>&& other) noexcept
+    {
+      if (other) {
+        m_value = memory::move(other.join());
+        m_engaged = true;
+      } else {
+        m_empty = none;
+        m_engaged = false;
+      }
+    }
+
     ~maybe() noexcept
     requires concepts::trivially_destructible<T>
     = default;

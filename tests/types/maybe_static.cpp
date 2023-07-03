@@ -34,6 +34,9 @@ static_assert(monad::chain(mb_made, math::abs<i32>) == 32_i32);
 constexpr auto mb_made_none = monad::make<maybe<int>>(none);
 static_assert(not mb_made_none);
 
+constexpr types::maybe<i64> mb_i64(mb_i32);
+static_assert(mb_i64);
+
 int main()
 {
   return 0;
