@@ -100,6 +100,9 @@ export namespace ties::meta {
 
   template<typename T>
   using remove_pointer = typename impl::remove_pointer<T>::type;
+
+  template<typename T>
+  using clear = remove_cv_qualifiers<remove_reference<remove_pointer<T>>>;
 }
 
 namespace ties::meta::impl {

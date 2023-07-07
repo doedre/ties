@@ -20,6 +20,8 @@ static_assert(not concepts::pointer<meta::remove_pointer<const volatile int*>>);
 static_assert(concepts::pointer<meta::remove_pointer<int**>>);
 static_assert(not concepts::pointer<meta::remove_pointer<meta::remove_pointer<int**>>>);
 
+static_assert(concepts::same_types<meta::clear<const int&>, int>);
+
 static_assert(concepts::lvalue_reference<meta::add_lvalue_reference<int>>);
 static_assert(concepts::lvalue_reference<meta::add_lvalue_reference<int&>>);
 static_assert(concepts::lvalue_reference<meta::add_lvalue_reference<int&&>>);
