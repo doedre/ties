@@ -5,6 +5,37 @@ import ties.meta;
 import ties.memory;
 import ties.functional.monad;
 
+namespace ties::types {
+  export struct none_t;
+
+  export template<typename T>
+  requires (
+      concepts::destructible<T> and
+      not concepts::reference<T> and
+      not concepts::array<T> and
+      not concepts::same_types<meta::remove_cv_qualifiers<T>, none_t>
+  )
+  class maybe;
+
+  template<typename T, typename U>
+  concept constructible_from_maybe =
+      concepts::constructible<T, const maybe<U>&>
+      or concepts::constructible<T, maybe<U>&>
+      or concepts::constructible<T, const maybe<U>&&>
+      or concepts::constructible<T, maybe<U>&&>
+      or concepts::convertible_types<T, const maybe<U>&>
+      or concepts::convertible_types<T, maybe<U>&>
+      or concepts::convertible_types<T, const maybe<U>&&>
+      or concepts::convertible_types<T, maybe<U>&&>;
+
+  template<typename T, typename U>
+  concept assignable_from_maybe =
+      concepts::assignable<T, const maybe<U>&>
+      or concepts::assignable<T, maybe<U>&>
+      or concepts::assignable<T, const maybe<U>&&>
+      or concepts::assignable<T, maybe<U>&&>;
+}
+
 export namespace ties::types {
   // libstdc++ impl
   struct none_t {
@@ -133,7 +164,10 @@ export namespace ties::types {
     }
 
     template<typename U = T>
-    requires concepts::constructible<T, meta::add_rvalue_reference<U>>
+    requires (
+        not concepts::same_types<maybe<T>, meta::clear<U>>
+        and concepts::constructible<T, meta::add_rvalue_reference<U>>
+    )
     explicit(not concepts::convertible_types<T, meta::add_rvalue_reference<U>>)
     constexpr maybe(U&& val) noexcept :
         m_value { memory::forward<U>(val) },
@@ -145,7 +179,7 @@ export namespace ties::types {
         not concepts::same_types<T, U>
         and concepts::constructible<T, meta::add_const_qualifier<meta::add_lvalue_reference<U>>>
     )
-    explicit(not concepts::convertible_types<T, meta::add_const_qualifier<meta::add_lvalue_reference<U>>>)
+    explicit(not concepts::convertible_types<meta::add_const_qualifier<meta::add_lvalue_reference<U>>, T>)
     constexpr maybe(const maybe<U>& other) noexcept
     {
       if (other) {
@@ -162,7 +196,7 @@ export namespace ties::types {
         not concepts::same_types<T, U>
         and concepts::constructible<T, meta::add_rvalue_reference<U>>
     )
-    explicit(not concepts::convertible_types<T, meta::add_rvalue_reference<U>>)
+    explicit(not concepts::convertible_types<meta::add_rvalue_reference<U>, T>)
     constexpr maybe(maybe<U>&& other) noexcept
     {
       if (other) {
@@ -172,6 +206,65 @@ export namespace ties::types {
         m_empty = none;
         m_engaged = false;
       }
+    }
+
+    constexpr maybe& operator=(none_t) noexcept
+    {
+      if (m_engaged) {
+        m_value.~T();
+        m_engaged = false;
+      }
+    }
+
+    template<typename U = T>
+    requires (
+        not concepts::same_types<maybe<T>, meta::clear<U>>
+        and concepts::constructible<T, meta::add_rvalue_reference<U>>
+    )
+    explicit(not concepts::convertible_types<T, meta::add_rvalue_reference<U>>)
+    constexpr maybe& operator=(U&& val) noexcept
+    {
+      m_value = memory::move(val);
+      m_engaged = true;
+      return *this;
+    }
+
+    template<typename U>
+    requires (
+        not concepts::same_types<T, U>
+        and concepts::constructible<T, meta::add_const_qualifier<meta::add_lvalue_reference<U>>>
+        and concepts::assignable<meta::add_lvalue_reference<T>, U>
+    )
+    explicit(not concepts::convertible_types<meta::add_const_qualifier<meta::add_lvalue_reference<U>>, T>)
+    constexpr maybe& operator=(const maybe<U>& other) noexcept
+    {
+      if (other) {
+        m_value = other.join();
+        m_engaged = true;
+      } else {
+        m_empty = none;
+        m_engaged = false;
+      }
+      return *this;
+    }
+
+    template<typename U>
+    requires (
+        not concepts::same_types<T, U>
+        and concepts::constructible<T, meta::add_rvalue_reference<U>>
+        and concepts::assignable<meta::add_lvalue_reference<T>, U>
+    )
+    explicit(not concepts::convertible_types<meta::add_rvalue_reference<U>, T>)
+    constexpr maybe& operator=(maybe<U>&& other) noexcept
+    {
+      if (other) {
+        m_value = memory::move(other.join());
+        m_engaged = true;
+      } else {
+        m_empty = none;
+        m_engaged = false;
+      }
+      return *this;
     }
 
     ~maybe() noexcept
