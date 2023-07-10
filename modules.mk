@@ -67,7 +67,7 @@ $(OBJ)/ties.math.o: $(SRC)/math/math.cppm $(OBJ)/ties.types.o $(OBJ)/ties.concep
 	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
 	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
 
-$(OBJ)/ties.math.checked.o: $(SRC)/math/checked.cppm $(OBJ)/ties.types.o $(OBJ)/ties.concepts.o $(OBJ)/ties.types.tuple.o $(OBJ)/ties.types.maybe.o
+$(OBJ)/ties.math.checked.o: $(SRC)/math/checked.cppm $(OBJ)/ties.types.o $(OBJ)/ties.concepts.o $(OBJ)/ties.types.maybe.o
 	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
 	@$(CXX) $(COMPILE_ARGS) -I$(INC) -c $< -o $@
 

@@ -42,7 +42,19 @@ int main()
     static_assert(res.get<0>() == ~0_u32);
     static_assert(res.get<1>() == true);
   }
+
   static_assert(not ties::math::checked::abs(limits<i64>::min));
+
+  static_assert(ties::math::checked::add(120_i8, 7_i8));
+  static_assert(ties::math::checked::add(120_i8, 7_u8));
+  static_assert(not ties::math::checked::add(120_i8, 20_i8));
+  static_assert(not ties::math::checked::add(-100_i8, 255_u8));
+  static_assert(not ties::math::checked::add(-120_i8, -20_i8));
+  static_assert(ties::math::checked::sub(120_i8, 20_i8));
+  static_assert(ties::math::checked::sub(120_i8, 200_u8));
+  static_assert(not ties::math::checked::sub(-120_i8, 20_i8));
+  static_assert(not ties::math::checked::sub(120_i8, -20_i8));
+  static_assert(not ties::math::checked::sub(120_i8, 255_u8));
 
   return 0;
 }
