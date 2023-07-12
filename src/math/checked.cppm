@@ -35,7 +35,7 @@ export namespace ties::math::checked {
     } else if ((rhs < 0) and (lhs < (types::limits<T>::min - rhs))) {
       return types::none;
     } else {
-      return lhs + rhs;
+      return static_cast<T>(lhs + rhs);
     }
   }
 
@@ -49,7 +49,7 @@ export namespace ties::math::checked {
     if (lhs > (types::limits<T>::max - rhs)) {
       return types::none;
     } else {
-      return lhs + static_cast<T>(rhs);
+      return static_cast<T>(lhs + static_cast<T>(rhs));
     }
   }
 
@@ -63,7 +63,7 @@ export namespace ties::math::checked {
     } else if ((rhs < 0) and (lhs > (types::limits<T>::max + rhs))) {
       return types::none;
     } else {
-      return lhs - rhs;
+      return static_cast<T>(lhs - rhs);
     }
   }
 
@@ -77,7 +77,7 @@ export namespace ties::math::checked {
     if (lhs < (types::limits<T>::min + rhs)) {
       return types::none;
     } else {
-      return lhs - rhs;
+      return static_cast<T>(lhs - rhs);
     }
   }
 }

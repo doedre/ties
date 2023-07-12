@@ -48,7 +48,7 @@ export namespace ties::math {
 
   template<typename T>
   requires concepts::integral<T>
-  [[nodiscard]] constexpr auto all_ones() noexcept -> T
+  [[nodiscard]] consteval auto all_ones() noexcept -> T
   {
     if constexpr (concepts::signed_integral<T>) {
       return -1;
