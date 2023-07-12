@@ -56,5 +56,20 @@ int main()
   static_assert(not ties::math::checked::sub(120_i8, -20_i8));
   static_assert(not ties::math::checked::sub(120_i8, 255_u8));
 
+  static_assert(not ties::math::checked::div(limits<i8>::min, -1_i8));
+  static_assert(ties::math::checked::div(
+        static_cast<i8>(limits<i8>::min + 1_i8),
+        -1_i8
+  ));
+
+  static_assert(ties::math::checked::mul(10, 2));
+  static_assert(not ties::math::checked::mul(limits<i32>::min / 2, -2));
+  static_assert(not ties::math::checked::mul(limits<i8>::max, 2_i8));
+
+  static_assert(ties::math::checked::shift_left(1_i8, 7));
+  static_assert(not ties::math::checked::shift_left(1_i128, 128));
+  static_assert(ties::math::checked::shift_right(1_i8, 7));
+  static_assert(not ties::math::checked::shift_right(1_i128, 128));
+
   return 0;
 }

@@ -30,9 +30,9 @@ export namespace ties::math::checked {
   [[nodiscard]] constexpr auto add(const T lhs, const T rhs) noexcept
       -> types::maybe<T>
   {
-    if ((rhs > 0) and (lhs > (types::limits<T>::max - rhs))) {
+    if ((rhs > 0) && (lhs > (types::limits<T>::max - rhs))) {
       return types::none;
-    } else if ((rhs < 0) and (lhs < (types::limits<T>::min - rhs))) {
+    } else if ((rhs < 0) && (lhs < (types::limits<T>::min - rhs))) {
       return types::none;
     } else {
       return static_cast<T>(lhs + rhs);
@@ -58,9 +58,9 @@ export namespace ties::math::checked {
   [[nodiscard]] constexpr auto sub(const T lhs, const T rhs) noexcept
       -> types::maybe<T>
   {
-    if ((rhs > 0) and (lhs < (types::limits<T>::min + rhs))) {
+    if ((rhs > 0) && (lhs < (types::limits<T>::min + rhs))) {
       return types::none;
-    } else if ((rhs < 0) and (lhs > (types::limits<T>::max + rhs))) {
+    } else if ((rhs < 0) && (lhs > (types::limits<T>::max + rhs))) {
       return types::none;
     } else {
       return static_cast<T>(lhs - rhs);
@@ -78,6 +78,78 @@ export namespace ties::math::checked {
       return types::none;
     } else {
       return static_cast<T>(lhs - rhs);
+    }
+  }
+
+  template<typename T>
+  requires concepts::integral<T>
+  [[nodiscard]] constexpr auto div(
+      const T lhs,
+      const T rhs
+  ) noexcept -> types::maybe<T>
+  {
+    if (rhs == 0) {
+      return types::none;
+    } else if ((lhs == types::limits<T>::min) && (rhs == -1)) {
+      return types::none;
+    } else {
+      return static_cast<T>(lhs / rhs);
+    }
+  }
+
+  template<typename T>
+  requires concepts::integral<T>
+  [[nodiscard]] constexpr auto mul(
+      const T lhs,
+      const T rhs
+  ) noexcept -> types::maybe<T>
+  {
+    if constexpr (concepts::signed_integral<T>) {
+      if ((rhs > 0) && (lhs > 0) && (lhs > (types::limits<T>::max / rhs))) {
+        return types::none;
+      } else if ((rhs > 0) && (lhs < 0) && (lhs < (types::limits<T>::min / rhs))) {
+        return types::none;
+      } else if ((rhs < -1) && (lhs > 0) && (lhs >= (types::limits<T>::min / rhs))) {
+        return types::none;
+      } else if ((rhs < 0) && (lhs < 0) && (lhs < (types::limits<T>::max / rhs))) {
+        return types::none;
+      } else {
+        return static_cast<T>(rhs * lhs);
+      }
+    } else {
+      if ((rhs != 0) && (lhs > (types::limits<T>::max / rhs))) {
+        return types::none;
+      } else {
+        return static_cast<T>(rhs * lhs);
+      }
+    }
+  }
+
+  template<typename T>
+  requires concepts::integral<T>
+  [[nodiscard]] constexpr auto shift_left(
+      const T lhs,
+      const types::u32 rhs
+  ) noexcept -> types::maybe<T>
+  {
+    if (rhs >= types::info<T>::bits) {
+      return types::none;
+    } else {
+      return static_cast<T>(lhs << rhs);
+    }
+  }
+
+  template<typename T>
+  requires concepts::integral<T>
+  [[nodiscard]] constexpr auto shift_right(
+      const T lhs,
+      const types::u32 rhs
+  ) noexcept -> types::maybe<T>
+  {
+    if (rhs >= types::info<T>::bits) {
+      return types::none;
+    } else {
+      return static_cast<T>(lhs >> rhs);
     }
   }
 }
