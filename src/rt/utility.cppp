@@ -1,0 +1,44 @@
+module;
+
+#include <stdlib.h>
+
+export module ties.rt:utility;
+
+export namespace ties::rt {
+  [[noreturn]] void exit(const int exit_code) noexcept
+  {
+    exit(exit_code);
+  }
+
+  [[noreturn]] void undefined_behaviour() noexcept
+  {
+    __builtin_unreachable();
+  }
+
+  [[noreturn]] void unimplemented() noexcept
+  {
+    __builtin_unreachable();
+  }
+
+  [[noreturn]] void abort() noexcept
+  {
+    abort();
+  }
+
+  void breakpoint() noexcept
+  {
+  }
+
+  bool running_under_debugger() noexcept
+  {
+    return false;
+  }
+
+  void breakpoint_if_debugging() noexcept
+  {
+    if (running_under_debugger()) {
+      breakpoint();
+    }
+  }
+}
+
