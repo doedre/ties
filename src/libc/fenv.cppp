@@ -1,0 +1,70 @@
+module;
+
+#include <fenv.h>
+
+export module ties.libc:fenv;
+
+namespace ties::libc::impl {
+  static constexpr int __FE_DIVBYZERO = FE_DIVBYZERO;
+  static constexpr int __FE_INEXACT = FE_INEXACT;
+  static constexpr int __FE_INVALID = FE_INVALID;
+  static constexpr int __FE_OVERFLOW = FE_OVERFLOW;
+  static constexpr int __FE_UNDERFLOW = FE_UNDERFLOW;
+  static constexpr int __FE_ALL_EXCEPT = FE_ALL_EXCEPT;
+
+  static constexpr int __FE_DOWNWARD = FE_DOWNWARD;
+  static constexpr int __FE_TONEAREST = FE_TONEAREST;
+  static constexpr int __FE_TOWARDZERO = FE_TOWARDZERO;
+  static constexpr int __FE_UPWARD = FE_UPWARD;
+
+  static const ::fenv_t* __FE_DFL_ENV = FE_DFL_ENV;
+}
+
+#undef FE_DIVBYZERO
+#undef FE_INEXACT
+#undef FE_INVALID
+#undef FE_OVERFLOW
+#undef FE_UNDERFLOW
+#undef FE_ALL_EXCEPT
+
+#undef FE_DOWNWARD
+#undef FE_TONEAREST
+#undef FE_TOWARDZERO
+#undef FE_UPWARD
+#undef FE_DFL_ENV
+
+export namespace ties::libc {
+  using ::fenv_t;
+  using ::fexcept_t;
+
+  using ::feclearexcept;
+  using ::fegetexceptflag;
+  using ::feraiseexcept;
+  using ::fesetexceptflag;
+  using ::fetestexcept;
+
+  using ::fegetround;
+  using ::fesetround;
+
+  using ::fegetenv;
+  using ::feholdexcept;
+  using ::fesetenv;
+  using ::fegetenv;
+
+  enum {
+    FE_DIVBYZERO = impl::__FE_DIVBYZERO,
+    FE_INEXACT = impl::__FE_INEXACT,
+    FE_INVALID = impl::__FE_INVALID,
+    FE_OVERFLOW = impl::__FE_OVERFLOW,
+    FE_UNDERFLOW = impl::__FE_UNDERFLOW,
+    FE_ALL_EXCEPT = impl::__FE_ALL_EXCEPT,
+
+    FE_DOWNWARD = impl::__FE_DOWNWARD,
+    FE_TONEAREST = impl::__FE_TONEAREST,
+    FE_TOWARDZERO = impl::__FE_TOWARDZERO,
+    FE_UPWARD = impl::__FE_UPWARD
+  };
+
+  inline const fenv_t* FE_DFL_ENV = impl::__FE_DFL_ENV;
+}
+
