@@ -1,9 +1,9 @@
 import ties.libc;
 
-using namespace ties;
+#include <cassert>
 
 int main()
 {
-  libc::printf("Hello, world!");
+  assert(libc::isalnum('a'));
   return 0;
 }

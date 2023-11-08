@@ -25,7 +25,7 @@ COMPILE_ARGS := \
 PRECOMPILE_ARGS := \
 		-xc++-module \
 		--precompile \
-		-fprebuilt-module-path=./$(OBJ) \
+		-fprebuilt-module-path=./$(PCM) \
 		$(COMPILE_ARGS)
 
 
