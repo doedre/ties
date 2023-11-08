@@ -4,7 +4,7 @@ module;
 
 export module ties.libc:ctype;
 
-export namespace libc {
+export namespace ties::libc {
   using std::isalnum;
   using std::isalpha;
   using std::isblank;

@@ -1,0 +1,10 @@
+export module ties.libc:errno;
+
+export namespace ties::libc {
+  inline thread_local int errno = 0;
+
+  inline constexpr int EDOM = 33;
+  inline constexpr int EILSEQ = 84;
+  inline constexpr int ERANGE = 34;
+}
+
