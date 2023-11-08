@@ -10,16 +10,22 @@ TEST := tests
 
 ### Artifacts
 OBJ := .obj
+PCM := .pcm
 BIN := bin
 
 ### Compilation options
 CXX := clang++
-PRECOMPILE_ARGS := --precompile -fprebuilt-module-path=./$(OBJ)
-COMPILE_ARGS := -std=c++20 \
+COMPILE_ARGS := \
+		-std=c++20 \
 		-nodefaultlibs \
 		-fno-rtti \
 		-fno-exceptions \
 		-fPIC \
-		-xc++ \
-		$(PRECOMPILE_ARGS)
+
+PRECOMPILE_ARGS := \
+		-xc++-module \
+		--precompile \
+		-fprebuilt-module-path=./$(OBJ) \
+		$(COMPILE_ARGS)
+
 

@@ -8,8 +8,8 @@ all: $(ties_modules)
 test: all $(ties_tests_static)
 
 clean:
-	@rm -rf gcm.cache
 	@rm -rf $(OBJ)
+	@rm -rf $(PCM)
 	@rm -rf $(BIN)
 
 .PHONY: clean test all
