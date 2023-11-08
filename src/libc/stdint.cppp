@@ -1,0 +1,250 @@
+module;
+
+#include <stddef.h>
+#include <stdint.h>
+#include <signal.h>
+
+export module ties.libc:stdint;
+
+namespace ties::libc::impl {
+  static constexpr int8_t __INT8_MIN = INT8_MIN;
+  static constexpr int16_t __INT16_MIN = INT16_MIN;
+  static constexpr int32_t __INT32_MIN = INT32_MIN;
+  static constexpr int64_t __INT64_MIN = INT64_MIN;
+
+  static constexpr int8_t __INT8_MAX = INT8_MAX;
+  static constexpr int16_t __INT16_MAX = INT16_MAX;
+  static constexpr int32_t __INT32_MAX = INT32_MAX;
+  static constexpr int64_t __INT64_MAX = INT64_MAX;
+
+  static constexpr uint8_t __UINT8_MAX = UINT8_MAX;
+  static constexpr uint16_t __UINT16_MAX = UINT16_MAX;
+  static constexpr uint32_t __UINT32_MAX = UINT32_MAX;
+  static constexpr uint64_t __UINT64_MAX = UINT64_MAX;
+
+  static constexpr int_fast8_t __INT_FAST8_MIN = INT_FAST8_MIN;
+  static constexpr int_fast16_t __INT_FAST16_MIN = INT_FAST16_MIN;
+  static constexpr int_fast32_t __INT_FAST32_MIN = INT_FAST32_MIN;
+  static constexpr int_fast64_t __INT_FAST64_MIN = INT_FAST64_MIN;
+
+  static constexpr int_fast8_t __INT_FAST8_MAX = INT_FAST8_MAX;
+  static constexpr int_fast16_t __INT_FAST16_MAX = INT_FAST16_MAX;
+  static constexpr int_fast32_t __INT_FAST32_MAX = INT_FAST32_MAX;
+  static constexpr int_fast64_t __INT_FAST64_MAX = INT_FAST64_MAX;
+
+  static constexpr uint_fast8_t __UINT_FAST8_MAX = UINT_FAST8_MAX;
+  static constexpr uint_fast16_t __UINT_FAST16_MAX = UINT_FAST16_MAX;
+  static constexpr uint_fast32_t __UINT_FAST32_MAX = UINT_FAST32_MAX;
+  static constexpr uint_fast64_t __UINT_FAST64_MAX = UINT_FAST64_MAX;
+
+  static constexpr int_least8_t __INT_LEAST8_MIN = INT_LEAST8_MIN;
+  static constexpr int_least16_t __INT_LEAST16_MIN = INT_LEAST16_MIN;
+  static constexpr int_least32_t __INT_LEAST32_MIN = INT_LEAST32_MIN;
+  static constexpr int_least64_t __INT_LEAST64_MIN = INT_LEAST64_MIN;
+
+  static constexpr int_least8_t __INT_LEAST8_MAX = INT_LEAST8_MAX;
+  static constexpr int_least16_t __INT_LEAST16_MAX = INT_LEAST16_MAX;
+  static constexpr int_least32_t __INT_LEAST32_MAX = INT_LEAST32_MAX;
+  static constexpr int_least64_t __INT_LEAST64_MAX = INT_LEAST64_MAX;
+
+  static constexpr uint_least8_t __UINT_LEAST8_MAX = UINT_LEAST8_MAX;
+  static constexpr uint_least16_t __UINT_LEAST16_MAX = UINT_LEAST16_MAX;
+  static constexpr uint_least32_t __UINT_LEAST32_MAX = UINT_LEAST32_MAX;
+  static constexpr uint_least64_t __UINT_LEAST64_MAX = UINT_LEAST64_MAX;
+
+  static constexpr intptr_t __INTPTR_MIN = INTPTR_MIN;
+  static constexpr intptr_t __INTPTR_MAX = INTPTR_MAX;
+  static constexpr uintptr_t __UINTPTR_MAX = UINTPTR_MAX;
+
+  static constexpr intmax_t __INTMAX_MIN = INTMAX_MIN;
+  static constexpr intmax_t __INTMAX_MAX = INTMAX_MAX;
+  static constexpr uintmax_t __UINTMAX_MAX = UINTMAX_MAX;
+
+  static constexpr ptrdiff_t __PTRDIFF_MIN = PTRDIFF_MIN;
+  static constexpr ptrdiff_t __PTRDIFF_MAX = PTRDIFF_MAX;
+
+  static constexpr sig_atomic_t __SIG_ATOMIC_MIN = SIG_ATOMIC_MIN;
+  static constexpr sig_atomic_t __SIG_ATOMIC_MAX = SIG_ATOMIC_MAX;
+
+  static constexpr size_t __SIZE_MAX = SIZE_MAX;
+
+  static constexpr wchar_t __WCHAR_MIN = WCHAR_MIN;
+  static constexpr wchar_t __WCHAR_MAX = WCHAR_MAX;
+
+  static constexpr wchar_t __WINT_MIN = WINT_MIN;
+  static constexpr wchar_t __WINT_MAX = WINT_MAX;
+}
+
+#undef INT8_MIN
+#undef INT16_MIN
+#undef INT32_MIN
+#undef INT64_MIN
+
+#undef INT8_MAX
+#undef INT16_MAX
+#undef INT32_MAX
+#undef INT64_MAX
+
+#undef UINT8_MAX
+#undef UINT16_MAX
+#undef UINT32_MAX
+#undef UINT64_MAX
+
+#undef INT_FAST8_MIN
+#undef INT_FAST16_MIN
+#undef INT_FAST32_MIN
+#undef INT_FAST64_MIN
+
+#undef INT_FAST8_MAX
+#undef INT_FAST16_MAX
+#undef INT_FAST32_MAX
+#undef INT_FAST64_MAX
+
+#undef UINT_FAST8_MAX
+#undef UINT_FAST16_MAX
+#undef UINT_FAST32_MAX
+#undef UINT_FAST64_MAX
+
+#undef INT_LEAST8_MIN
+#undef INT_LEAST16_MIN
+#undef INT_LEAST32_MIN
+#undef INT_LEAST64_MIN
+
+#undef INT_LEAST8_MAX
+#undef INT_LEAST16_MAX
+#undef INT_LEAST32_MAX
+#undef INT_LEAST64_MAX
+
+#undef UINT_LEAST8_MAX
+#undef UINT_LEAST16_MAX
+#undef UINT_LEAST32_MAX
+#undef UINT_LEAST64_MAX
+
+#undef INTPTR_MIN
+#undef INTPTR_MAX
+#undef UINTPTR_MAX
+
+#undef INTMAX_MIN
+#undef INTMAX_MAX
+#undef UINTMAX_MAX
+
+#undef SIG_ATOMIC_MIN
+#undef SIG_ATOMIC_MAX
+
+#undef PTRDIFF_MIN
+#undef PTRDIFF_MAX
+
+#undef SIZE_MAX
+
+#undef WCHAR_MIN
+#undef WCHAR_MAX
+
+#undef WINT_MIN
+#undef WINT_MAX
+
+export namespace ties::libc {
+  using ::int8_t;
+  using ::int16_t;
+  using ::int32_t;
+  using ::int64_t;
+
+  using ::uint8_t;
+  using ::uint16_t;
+  using ::uint32_t;
+  using ::uint64_t;
+
+  using ::int_fast8_t;
+  using ::int_fast16_t;
+  using ::int_fast32_t;
+  using ::int_fast64_t;
+
+  using ::uint_fast8_t;
+  using ::uint_fast16_t;
+  using ::uint_fast32_t;
+  using ::uint_fast64_t;
+
+  using ::int_least8_t;
+  using ::int_least16_t;
+  using ::int_least32_t;
+  using ::int_least64_t;
+
+  using ::uint_least8_t;
+  using ::uint_least16_t;
+  using ::uint_least32_t;
+  using ::uint_least64_t;
+
+  // optional
+  using ::intptr_t;
+  using ::uintptr_t;
+
+  using ::intmax_t;
+  using ::uintmax_t;
+
+  inline constexpr int8_t INT8_MIN = impl::__INT8_MIN;
+  inline constexpr int16_t INT16_MIN = impl::__INT16_MIN;
+  inline constexpr int32_t INT32_MIN = impl::__INT32_MIN;
+  inline constexpr int64_t INT64_MIN = impl::__INT64_MIN;
+
+  inline constexpr int8_t INT8_MAX = impl::__INT8_MAX;
+  inline constexpr int16_t INT16_MAX = impl::__INT16_MAX;
+  inline constexpr int32_t INT32_MAX = impl::__INT32_MAX;
+  inline constexpr int64_t INT64_MAX = impl::__INT64_MAX;
+
+  inline constexpr uint8_t UINT8_MAX = impl::__UINT8_MAX;
+  inline constexpr uint16_t UINT16_MAX = impl::__UINT16_MAX;
+  inline constexpr uint32_t UINT32_MAX = impl::__UINT32_MAX;
+  inline constexpr uint64_t UINT64_MAX = impl::__UINT64_MAX;
+
+  inline constexpr int_fast8_t INT_FAST8_MIN = impl::__INT_FAST8_MIN;
+  inline constexpr int_fast16_t INT_FAST16_MIN = impl::__INT_FAST16_MIN;
+  inline constexpr int_fast32_t INT_FAST32_MIN = impl::__INT_FAST32_MIN;
+  inline constexpr int_fast64_t INT_FAST64_MIN = impl::__INT_FAST64_MIN;
+
+  inline constexpr int_fast8_t INT_FAST8_MAX = impl::__INT_FAST8_MAX;
+  inline constexpr int_fast16_t INT_FAST16_MAX = impl::__INT_FAST16_MAX;
+  inline constexpr int_fast32_t INT_FAST32_MAX = impl::__INT_FAST32_MAX;
+  inline constexpr int_fast64_t INT_FAST64_MAX = impl::__INT_FAST64_MAX;
+
+  inline constexpr uint_fast8_t UINT_FAST8_MAX = impl::__UINT_FAST8_MAX;
+  inline constexpr uint_fast16_t UINT_FAST16_MAX = impl::__UINT_FAST16_MAX;
+  inline constexpr uint_fast32_t UINT_FAST32_MAX = impl::__UINT_FAST32_MAX;
+  inline constexpr uint_fast64_t UINT_FAST64_MAX = impl::__UINT_FAST64_MAX;
+
+  inline constexpr int_least8_t INT_LEAST8_MIN = impl::__INT_LEAST8_MIN;
+  inline constexpr int_least16_t INT_LEAST16_MIN = impl::__INT_LEAST16_MIN;
+  inline constexpr int_least32_t INT_LEAST32_MIN = impl::__INT_LEAST32_MIN;
+  inline constexpr int_least64_t INT_LEAST64_MIN = impl::__INT_LEAST64_MIN;
+
+  inline constexpr int_least8_t INT_LEAST8_MAX = impl::__INT_LEAST8_MAX;
+  inline constexpr int_least16_t INT_LEAST16_MAX = impl::__INT_LEAST16_MAX;
+  inline constexpr int_least32_t INT_LEAST32_MAX = impl::__INT_LEAST32_MAX;
+  inline constexpr int_least64_t INT_LEAST64_MAX = impl::__INT_LEAST64_MAX;
+
+  inline constexpr uint_least8_t UINT_LEAST8_MAX = impl::__UINT_LEAST8_MAX;
+  inline constexpr uint_least16_t UINT_LEAST16_MAX = impl::__UINT_LEAST16_MAX;
+  inline constexpr uint_least32_t UINT_LEAST32_MAX = impl::__UINT_LEAST32_MAX;
+  inline constexpr uint_least64_t UINT_LEAST64_MAX = impl::__UINT_LEAST64_MAX;
+
+  inline constexpr intptr_t INTPTR_MIN = impl::__INTPTR_MIN;
+  inline constexpr intptr_t INTPTR_MAX = impl::__INTPTR_MAX;
+  inline constexpr uintptr_t UINTPTR_MAX = impl::__UINTPTR_MAX;
+
+  inline constexpr intmax_t INTMAX_MIN = impl::__INTMAX_MIN;
+  inline constexpr intmax_t INTMAX_MAX = impl::__INTMAX_MAX;
+  inline constexpr uintmax_t UINTMAX_MAX = impl::__UINTMAX_MAX;
+
+  inline constexpr ptrdiff_t PTRDIFF_MIN = impl::__PTRDIFF_MIN;
+  inline constexpr ptrdiff_t PTRDIFF_MAX = impl::__PTRDIFF_MAX;
+
+  inline constexpr sig_atomic_t SIG_ATOMIC_MIN = impl::__SIG_ATOMIC_MIN;
+  inline constexpr sig_atomic_t SIG_ATOMIC_MAX = impl::__SIG_ATOMIC_MAX;
+
+  inline constexpr size_t SIZE_MAX = impl::__SIZE_MAX;
+
+  inline constexpr wchar_t WCHAR_MIN = impl::__WCHAR_MIN;
+  inline constexpr wchar_t WCHAR_MAX = impl::__WCHAR_MAX;
+
+  inline constexpr wchar_t WINT_MIN = impl::__WINT_MIN;
+  inline constexpr wchar_t WINT_MAX = impl::__WINT_MAX;
+}
+
