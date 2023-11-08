@@ -1,6 +1,6 @@
 import ties.libc;
 
-#include <cassert>
+#include <assert.h>
 
 using namespace ties;
 

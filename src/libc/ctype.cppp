@@ -1,24 +1,24 @@
 module;
 
-#include <cctype>
+#include <ctype.h>
 
 export module ties.libc:ctype;
 
 export namespace ties::libc {
-  using std::isalnum;
-  using std::isalpha;
-  using std::isblank;
-  using std::iscntrl;
-  using std::isdigit;
-  using std::isgraph;
-  using std::islower;
-  using std::isprint;
-  using std::ispunct;
-  using std::isspace;
-  using std::isupper;
-  using std::isxdigit;
+  using ::isalnum;
+  using ::isalpha;
+  using ::isblank;
+  using ::iscntrl;
+  using ::isdigit;
+  using ::isgraph;
+  using ::islower;
+  using ::isprint;
+  using ::ispunct;
+  using ::isspace;
+  using ::isupper;
+  using ::isxdigit;
 
-  using std::tolower;
-  using std::toupper;
+  using ::tolower;
+  using ::toupper;
 }
 
