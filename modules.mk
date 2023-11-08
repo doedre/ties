@@ -27,12 +27,12 @@ $(OBJ)/ties.libc-errno.o: $(PCM)/ties.libc-errno.pcm
 	@mkdir -p $(OBJ)
 	@$(CXX) $(COMPILE_ARGS) -c $< -o $@
 
-$(PCM)/ties.libc.pcm: $(SRC)/libc/libc.cppm $(PCM)/ties.libc-ctype.pcm $(PCM)/ties.libc-errno.pcm
+$(PCM)/ties.libc.pcm: $(SRC)/libc/libc.cppm $(PCM)/ties.libc-ctype.pcm
 	@printf ' PCM\t%-40s\t-> %s\n' "$<" "$@"
 	@mkdir -p $(PCM)
 	@$(CXX) $(PRECOMPILE_ARGS) -I$(INC) -c $< -o $@
 
-$(OBJ)/ties.libc.o: $(PCM)/ties.libc.pcm $(OBJ)/ties.libc-ctype.o $(OBJ)/ties.libc-errno.o
+$(OBJ)/ties.libc.o: $(PCM)/ties.libc.pcm $(OBJ)/ties.libc-ctype.o
 	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
 	@mkdir -p $(OBJ)
 	@$(CXX) $(COMPILE_ARGS) -c $< -o $@
