@@ -1,0 +1,115 @@
+module;
+
+#include <float.h>
+
+export module ties.libc:flt;
+
+namespace ties::libc::impl {
+  static constexpr int __FLT_RADIX = FLT_RADIX;
+
+  static constexpr float __FLT_MIN = FLT_MIN;
+  static constexpr float __FLT_TRUE_MIN = FLT_TRUE_MIN;
+  static constexpr float __FLT_MAX = FLT_MAX;
+  static constexpr float __FLT_EPSILON = FLT_EPSILON;
+
+  static constexpr int __FLT_MANT_DIG = FLT_MANT_DIG;
+  static constexpr int __FLT_MIN_EXP = FLT_MIN_EXP;
+  static constexpr int __FLT_MAX_EXP = FLT_MAX_EXP;
+  static constexpr int __FLT_HAS_SUBNORM = FLT_HAS_SUBNORM;
+
+  static constexpr int __FLT_DIG = FLT_DIG;
+  static constexpr int __FLT_DECIMAL_DIG = FLT_DECIMAL_DIG;
+  static constexpr int __FLT_MIN_10_EXP = FLT_MIN_10_EXP;
+  static constexpr int __FLT_MAX_10_EXP = FLT_MAX_10_EXP;
+
+  static constexpr double __DBL_TRUE_MIN = DBL_TRUE_MIN;
+  static constexpr double __DBL_MIN = DBL_MIN;
+  static constexpr double __DBL_MAX = DBL_MAX;
+  static constexpr double __DBL_EPSILON = DBL_EPSILON;
+
+  static constexpr int __DBL_MANT_DIG = DBL_MANT_DIG;
+  static constexpr int __DBL_MIN_EXP = DBL_MIN_EXP;
+  static constexpr int __DBL_MAX_EXP = DBL_MAX_EXP;
+  static constexpr int __DBL_HAS_SUBNORM = DBL_HAS_SUBNORM;
+
+  static constexpr int __DBL_DIG = DBL_DIG;
+  static constexpr int __DBL_DECIMAL_DIG = DBL_DECIMAL_DIG;
+  static constexpr int __DBL_MIN_10_EXP = DBL_MIN_10_EXP;
+  static constexpr int __DBL_MAX_10_EXP = DBL_MAX_10_EXP;
+
+  static constexpr int __LDBL_HAS_SUBNORM = LDBL_HAS_SUBNORM;
+  static constexpr int __LDBL_DECIMAL_DIG = LDBL_DECIMAL_DIG;
+}
+
+#undef FLT_RADIX
+
+#undef FLT_MIN
+#undef FLT_TRUE_MIN
+#undef FLT_MAX
+#undef FLT_EPSILON
+
+#undef FLT_MANT_DIG
+#undef FLT_MIN_EXP
+#undef FLT_MAX_EXP
+#undef FLT_HAS_SUBNORM
+
+#undef FLT_DIG
+#undef FLT_DECIMAL_DIG
+#undef FLT_MIN_10_EXP
+#undef FLT_MAX_10_EXP
+
+#undef DBL_MIN
+#undef DBL_TRUE_MIN
+#undef DBL_MAX
+#undef DBL_EPSILON
+
+#undef DBL_MANT_DIG
+#undef DBL_MIN_EXP
+#undef DBL_MAX_EXP
+#undef DBL_HAS_SUBNORM
+
+#undef DBL_DIG
+#undef DBL_DECIMAL_DIG
+#undef DBL_MIN_10_EXP
+#undef DBL_MAX_10_EXP
+
+#undef LDBL_HAS_SUBNORM
+#undef LDBL_DECIMAL_DIG
+
+export namespace ties::libc {
+  inline constexpr int FLT_RADIX = impl::__FLT_RADIX;
+
+  inline constexpr float FLT_MIN = impl::__FLT_MIN;
+  inline constexpr float FLT_TRUE_MIN = impl::__FLT_TRUE_MIN;
+  inline constexpr float FLT_MAX = impl::__FLT_MAX;
+  inline constexpr float FLT_EPSILON = impl::__FLT_EPSILON;
+
+  inline constexpr int FLT_MANT_DIG = impl::__FLT_MANT_DIG;
+  inline constexpr int FLT_MIN_EXP = impl::__FLT_MIN_EXP;
+  inline constexpr int FLT_MAX_EXP = impl::__FLT_MAX_EXP;
+  inline constexpr int FLT_HAS_SUBNORM = impl::__FLT_HAS_SUBNORM;
+
+  inline constexpr int FLT_DIG = impl::__FLT_DIG;
+  inline constexpr int FLT_DECIMAL_DIG = impl::__FLT_DECIMAL_DIG;
+  inline constexpr int FLT_MIN_10_EXP = impl::__FLT_MIN_10_EXP;
+  inline constexpr int FLT_MAX_10_EXP = impl::__FLT_MAX_10_EXP;
+
+  inline constexpr double DBL_TRUE_MIN = impl::__DBL_TRUE_MIN;
+  inline constexpr double DBL_MIN = impl::__DBL_MIN;
+  inline constexpr double DBL_MAX = impl::__DBL_MAX;
+  inline constexpr double DBL_EPSILON = impl::__DBL_EPSILON;
+
+  inline constexpr int DBL_MANT_DIG = impl::__DBL_MANT_DIG;
+  inline constexpr int DBL_MIN_EXP = impl::__DBL_MIN_EXP;
+  inline constexpr int DBL_MAX_EXP = impl::__DBL_MAX_EXP;
+  inline constexpr int DBL_HAS_SUBNORM = impl::__DBL_HAS_SUBNORM;
+
+  inline constexpr int DBL_DIG = impl::__DBL_DIG;
+  inline constexpr int DBL_DECIMAL_DIG = impl::__DBL_DECIMAL_DIG;
+  inline constexpr int DBL_MIN_10_EXP = impl::__DBL_MIN_10_EXP;
+  inline constexpr int DBL_MAX_10_EXP = impl::__DBL_MAX_10_EXP;
+
+  inline constexpr int LDBL_HAS_SUBNORM = impl::__LDBL_HAS_SUBNORM;
+  inline constexpr int LDBL_DECIMAL_DIG = impl::__LDBL_DECIMAL_DIG;
+}
+
