@@ -1,0 +1,91 @@
+module;
+
+#include <limits.h>
+
+export module ties.libc:limits;
+
+namespace ties::libc::impl {
+  static constexpr char __CHAR_BIT = CHAR_BIT;
+
+  static constexpr char __SCHAR_MIN = SCHAR_MIN;
+  static constexpr char __SCHAR_MAX = SCHAR_MAX;
+  static constexpr unsigned char __UCHAR_MAX = UCHAR_MAX;
+
+  static constexpr char __CHAR_MIN = CHAR_MIN;
+  static constexpr char __CHAR_MAX = CHAR_MAX;
+
+  static constexpr char __MB_LEN_MAX = MB_LEN_MAX;
+
+  static constexpr short __SHRT_MIN = SHRT_MIN;
+  static constexpr short __SHRT_MAX = SHRT_MAX;
+  static constexpr unsigned short __USHRT_MAX = USHRT_MAX;
+
+  static constexpr int __INT_MIN = INT_MIN;
+  static constexpr int __INT_MAX = INT_MAX;
+  static constexpr unsigned int __UINT_MAX = UINT_MAX;
+
+  static constexpr long int __LONG_MIN = LONG_MIN;
+  static constexpr long int _LONG_MAX = LONG_MAX;
+  static constexpr unsigned long int __ULONG_MAX = ULONG_MAX;
+
+  static constexpr long long int __LLONG_MIN = LLONG_MIN;
+  static constexpr long long int __LLONG_MAX = LLONG_MAX;
+  static constexpr unsigned long long int __ULLONG_MAX = ULLONG_MAX;
+}
+
+#undef CHAR_BIT
+
+#undef SCHAR_MIN
+#undef SCHAR_MAX
+#undef UCHAR_MAX
+
+#undef CHAR_MIN
+#undef CHAR_MAX
+
+#undef MB_LEN_MAX
+
+#undef SHRT_MIN
+#undef SHRT_MAX
+#undef USHRT_MAX
+
+#undef INT_MIN
+#undef INT_MAX
+#undef UINT_MAX
+
+#undef LONG_MIN
+#undef LONG_MAX
+#undef ULONG_MAX
+
+#undef LLONG_MIN
+#undef LLONG_MAX
+#undef ULLONG_MAX
+
+export namespace ties::libc {
+  inline constexpr char CHAR_BIT = impl::__CHAR_BIT;
+
+  inline constexpr char SCHAR_MIN = impl::__SCHAR_MIN;
+  inline constexpr char SCHAR_MAX = impl::__SCHAR_MAX;
+  inline constexpr unsigned char UCHAR_MAX = impl::__UCHAR_MAX;
+
+  inline constexpr char CHAR_MIN = impl::__CHAR_MIN;
+  inline constexpr char CHAR_MAX = impl::__CHAR_MAX;
+
+  inline constexpr char MB_LEN_MAX = impl::__MB_LEN_MAX;
+
+  inline constexpr short SHRT_MIN = impl::__SHRT_MIN;
+  inline constexpr short SHRT_MAX = impl::__SHRT_MAX;
+  inline constexpr unsigned short USHRT_MAX = impl::__USHRT_MAX;
+
+  inline constexpr int INT_MIN = impl::__INT_MIN;
+  inline constexpr int INT_MAX = impl::__INT_MAX;
+  inline constexpr unsigned int UINT_MAX = impl::__UINT_MAX;
+
+  inline constexpr long int LONG_MIN = impl::__LONG_MIN;
+  inline constexpr long int LONG_MAX = impl::_LONG_MAX;
+  inline constexpr unsigned long int ULONG_MAX = impl::__ULONG_MAX;
+
+  inline constexpr long long int LLONG_MIN = impl::__LLONG_MIN;
+  inline constexpr long long int LLONG_MAX = impl::__LLONG_MAX;
+  inline constexpr unsigned long long int ULLONG_MAX = impl::__ULLONG_MAX;
+}
+
