@@ -8,5 +8,6 @@ export import :flt;
 export import :limits;
 export import :locale;
 export import :math;
+export import :setjmp;
 export import :stdint;
 

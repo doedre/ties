@@ -1,0 +1,14 @@
+module;
+
+#include <setjmp.h>
+
+export module ties.libc:setjmp;
+
+export namespace ties::libc {
+  using ::jmp_buf;
+
+  // Usually implemented as macro, do something about it
+  using ::setjmp;
+  using ::longjmp;
+}
+
