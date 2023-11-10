@@ -1,0 +1,49 @@
+module;
+
+#include <signal.h>
+
+export module ties.libc:signal;
+
+namespace ties::libc::impl {
+  auto __SIG_DFL = SIG_DFL;
+  auto __SIG_ERR = SIG_ERR;
+  auto __SIG_IGN = SIG_IGN;
+
+  // May not be defined
+  static constexpr int __SIGABRT = SIGABRT;
+  static constexpr int __SIGFPE = SIGFPE;
+  static constexpr int __SIGILL = SIGILL;
+  static constexpr int __SIGINT = SIGINT;
+  static constexpr int __SIGSEGV = SIGSEGV;
+  static constexpr int __SIGTERM = SIGTERM;
+}
+
+#undef SIG_DFL
+#undef SIG_ERR
+#undef SIG_IGN
+
+#undef SIGABRT
+#undef SIGFPE
+#undef SIGILL
+#undef SIGINT
+#undef SIGSEGV
+#undef SIGTERM
+
+export namespace ties::libc {
+  using ::sig_atomic_t;
+
+  auto SIG_DFL = impl::__SIG_DFL;
+  auto SIG_ERR = impl::__SIG_ERR;
+  auto SIG_IGN = impl::__SIG_IGN;
+
+  inline constexpr int SIGAPRT = impl::__SIGABRT;
+  inline constexpr int SIGFPE = impl::__SIGFPE;
+  inline constexpr int SIGILL = impl::__SIGILL;
+  inline constexpr int SIGINT = impl::__SIGINT;
+  inline constexpr int SIGSEGV = impl::__SIGSEGV;
+  inline constexpr int SIGTERM = impl::__SIGTERM;
+
+  using ::signal;
+  using ::raise;
+}
+
