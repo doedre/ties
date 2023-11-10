@@ -18,5 +18,7 @@ int main()
   libc::int_fast16_t i8 = libc::INT8_MAX;
   assert(i8 != 100);
 
+  assert(libc::fpclassify(0.0) == libc::FP_ZERO);
+
   return 0;
 }
