@@ -1,0 +1,36 @@
+module;
+
+#include <locale.h>
+
+export module ties.libc:locale;
+
+namespace ties::libc::impl {
+  static constexpr int __LC_ALL = LC_ALL;
+  static constexpr int __LC_COLLATE = LC_COLLATE;
+  static constexpr int __LC_CTYPE = LC_CTYPE;
+  static constexpr int __LC_MONETARY = LC_MONETARY;
+  static constexpr int __LC_NUMERIC = LC_NUMERIC;
+  static constexpr int __LC_TIME = LC_TIME;
+}
+
+#undef LC_ALL
+#undef LC_COLLATE
+#undef LC_CTYPE
+#undef LC_MONETARY
+#undef LC_NUMERIC
+#undef LC_TIME
+
+export namespace ties::libc {
+  using ::lconv;
+
+  inline constexpr int LC_ALL = impl::__LC_ALL;
+  inline constexpr int LC_COLLATE = impl::__LC_COLLATE;
+  inline constexpr int LC_CTYPE = impl::__LC_CTYPE;
+  inline constexpr int LC_MONETARY = impl::__LC_MONETARY;
+  inline constexpr int LC_NUMERIC = impl::__LC_NUMERIC;
+  inline constexpr int LC_TIME = impl::__LC_TIME;
+
+  using ::setlocale;
+  using ::localeconv;
+}
+
