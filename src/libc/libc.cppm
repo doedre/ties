@@ -10,5 +10,6 @@ export import :locale;
 export import :math;
 export import :setjmp;
 export import :signal;
+export import :stdarg;
 export import :stdint;
 

@@ -1,0 +1,10 @@
+module;
+
+#include <stdarg.h>
+
+export module ties.libc:stdarg;
+
+export namespace ties::libc {
+  using ::va_list;
+}
+

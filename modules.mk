@@ -97,6 +97,16 @@ $(OBJ)/ties.libc-signal.o: $(PCM)/ties.libc-signal.pcm
 	@mkdir -p $(OBJ)
 	@$(CXX) $(COMPILE_ARGS) -c $< -o $@
 
+$(PCM)/ties.libc-stdarg.pcm: $(SRC)/libc/stdarg.cppp
+	@printf ' PCM\t%-40s\t-> %s\n' "$<" "$@"
+	@mkdir -p $(PCM)
+	@$(CXX) $(PRECOMPILE_ARGS) -I$(INC) -c $< -o $@
+
+$(OBJ)/ties.libc-stdarg.o: $(PCM)/ties.libc-stdarg.pcm
+	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
+	@mkdir -p $(OBJ)
+	@$(CXX) $(COMPILE_ARGS) -c $< -o $@
+
 $(PCM)/ties.libc-stdint.pcm: $(SRC)/libc/stdint.cppp
 	@printf ' PCM\t%-40s\t-> %s\n' "$<" "$@"
 	@mkdir -p $(PCM)
@@ -107,12 +117,12 @@ $(OBJ)/ties.libc-stdint.o: $(PCM)/ties.libc-stdint.pcm
 	@mkdir -p $(OBJ)
 	@$(CXX) $(COMPILE_ARGS) -c $< -o $@
 
-$(PCM)/ties.libc.pcm: $(SRC)/libc/libc.cppm $(PCM)/ties.libc-ctype.pcm $(PCM)/ties.libc-flt.pcm $(PCM)/ties.libc-limits.pcm $(PCM)/ties.libc-locale.pcm $(PCM)/ties.libc-math.pcm $(PCM)/ties.libc-setjmp.pcm $(PCM)/ties.libc-signal.pcm $(PCM)/ties.libc-fenv.pcm $(PCM)/ties.libc-stdint.pcm
+$(PCM)/ties.libc.pcm: $(SRC)/libc/libc.cppm $(PCM)/ties.libc-ctype.pcm $(PCM)/ties.libc-flt.pcm $(PCM)/ties.libc-limits.pcm $(PCM)/ties.libc-locale.pcm $(PCM)/ties.libc-math.pcm $(PCM)/ties.libc-setjmp.pcm $(PCM)/ties.libc-signal.pcm $(PCM)/ties.libc-stdarg.pcm $(PCM)/ties.libc-fenv.pcm $(PCM)/ties.libc-stdint.pcm
 	@printf ' PCM\t%-40s\t-> %s\n' "$<" "$@"
 	@mkdir -p $(PCM)
 	@$(CXX) $(PRECOMPILE_ARGS) -I$(INC) -c $< -o $@
 
-$(OBJ)/ties.libc.o: $(PCM)/ties.libc.pcm $(OBJ)/ties.libc-ctype.o $(OBJ)/ties.libc-flt.o $(OBJ)/ties.libc-limits.o $(OBJ)/ties.libc-locale.o $(OBJ)/ties.libc-math.o $(OBJ)/ties.libc-setjmp.o $(OBJ)/ties.libc-signal.o $(OBJ)/ties.libc-fenv.o $(OBJ)/ties.libc-stdint.o
+$(OBJ)/ties.libc.o: $(PCM)/ties.libc.pcm $(OBJ)/ties.libc-ctype.o $(OBJ)/ties.libc-flt.o $(OBJ)/ties.libc-limits.o $(OBJ)/ties.libc-locale.o $(OBJ)/ties.libc-math.o $(OBJ)/ties.libc-setjmp.o $(OBJ)/ties.libc-signal.o $(OBJ)/ties.libc-stdarg.o $(OBJ)/ties.libc-fenv.o $(OBJ)/ties.libc-stdint.o
 	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
 	@mkdir -p $(OBJ)
 	@$(CXX) $(COMPILE_ARGS) -c $< -o $@
