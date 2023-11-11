@@ -20,4 +20,5 @@ export import :threads;
 export import :time;
 export import :uchar;
 export import :wchar;
+export import :wctype;
 
