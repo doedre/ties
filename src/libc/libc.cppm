@@ -18,4 +18,5 @@ export import :stdlib;
 export import :string;
 export import :threads;
 export import :time;
+export import :uchar;
 

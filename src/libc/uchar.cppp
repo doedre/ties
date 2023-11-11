@@ -1,0 +1,13 @@
+module;
+
+#include <uchar.h>
+
+export module ties.libc:uchar;
+
+export namespace ties::libc {
+  using ::mbrtoc16;
+  using ::c16rtomb;
+  using ::mbrtoc32;
+  using ::c32rtomb;
+}
+
