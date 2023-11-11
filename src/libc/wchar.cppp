@@ -1,0 +1,91 @@
+module;
+
+#include <wchar.h>
+
+export module ties.libc:wchar;
+
+namespace ties::libc::impl {
+  static constexpr wint_t __WEOF = WEOF;
+}
+
+#undef WEOF
+
+export namespace ties::libc {
+  using ::mbstate_t;
+  using ::wint_t;
+
+  inline constexpr wint_t WEOF = impl::__WEOF;
+
+  using ::fwprintf;
+  using ::fwscanf;
+  using ::swprintf;
+  using ::swscanf;
+  using ::vfwprintf;
+  using ::vfwscanf;
+  using ::vswprintf;
+  using ::vswscanf;
+  using ::vwprintf;
+  using ::vwscanf;
+  using ::wprintf;
+  using ::wscanf;
+
+  using ::fgetwc;
+  using ::fgetws;
+  using ::fputwc;
+  using ::fputws;
+  using ::fwide;
+  using ::getwc;
+  using ::getwchar;
+  using ::putwc;
+  using ::putwchar;
+  using ::ungetwc;
+
+  using ::wcstod;
+  using ::wcstof;
+  using ::wcstold;
+
+  using ::wcstol;
+  using ::wcstoll;
+  using ::wcstoul;
+  using ::wcstoull;
+
+  using ::wcscpy;
+  using ::wcsncpy;
+  using ::wmemcpy;
+  using ::wmemmove;
+  using ::wcscat;
+  using ::wcsncat;
+
+  using ::wcscmp;
+  using ::wcscoll;
+  using ::wcsncmp;
+  using ::wcsxfrm;
+  using ::wmemcmp;
+
+  using ::wcschr;
+  using ::wcsspn;
+  using ::wcspbrk;
+  using ::wcsrchr;
+  using ::wcsspn;
+  using ::wcsstr;
+  using ::wcstok;
+  using ::wmemchr;
+
+  using ::wcslen;
+  using ::wmemset;
+
+  using ::wcsftime;
+
+  using ::btowc;
+  using ::wctob;
+
+  using ::mbsinit;
+
+  using ::mbrlen;
+  using ::mbrtowc;
+  using ::wcrtomb;
+
+  using ::mbsrtowcs;
+  using ::wcsrtombs;
+}
+

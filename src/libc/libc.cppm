@@ -19,4 +19,5 @@ export import :string;
 export import :threads;
 export import :time;
 export import :uchar;
+export import :wchar;
 
