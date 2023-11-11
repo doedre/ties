@@ -13,4 +13,5 @@ export import :signal;
 export import :stdarg;
 export import :stddef;
 export import :stdint;
+export import :stdio;
 

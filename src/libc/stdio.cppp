@@ -1,0 +1,131 @@
+module;
+
+#include <stdio.h>
+
+export module ties.libc:stdio;
+
+namespace ties::libc::impl {
+  static constexpr int ___IOFBF = _IOFBF;
+  static constexpr int ___IOLBF = _IOLBF;
+  static constexpr int ___IONBF = _IONBF;
+
+  static constexpr size_t __BUFSIZ = BUFSIZ;
+
+  static constexpr int __EOF = EOF;
+
+  static constexpr int __FOPEN_MAX = FOPEN_MAX;
+  static constexpr int __FILENAME_MAX = FILENAME_MAX;
+  static constexpr size_t __L_tmpnam = L_tmpnam;
+
+  static constexpr int __SEEK_CUR = SEEK_CUR;
+  static constexpr int __SEEK_END = SEEK_END;
+  static constexpr int __SEEK_SET = SEEK_SET;
+
+  static constexpr size_t __TMP_MAX = TMP_MAX;
+
+  FILE* __stdin = stdin;
+  FILE* __stdout = stdout;
+  FILE* __stderr = stderr;
+}
+
+#undef _IOFBF
+#undef _IOLBF
+#undef _IONBF
+
+#undef BUFSIZ
+
+#undef EOF
+
+#undef FOPEN_MAX
+#undef FILENAME_MAX
+#undef L_tmpnam
+
+#undef SEEK_CUR
+#undef SEEK_END
+#undef SEEK_SET
+
+#undef TMP_MAX
+
+#undef stdin
+#undef stdout
+#undef stderr
+
+export namespace ties::libc {
+  using ::FILE;
+  using ::fpos_t;
+
+  inline constexpr int _IOFBF = impl::___IOFBF;
+  inline constexpr int _IOLBF = impl::___IOLBF;
+  inline constexpr int _IONBF = impl::___IONBF;
+
+  inline constexpr size_t BUFSIZ = impl::__BUFSIZ;
+
+  inline constexpr int EOF = impl::__EOF;
+
+  inline constexpr int FOPEN_MAX = impl::__FOPEN_MAX;
+  inline constexpr int FILENAME_MAX = impl::__FILENAME_MAX;
+  inline constexpr size_t L_tmpnam = impl::__L_tmpnam;
+
+  inline constexpr int SEEK_CUR = impl::__SEEK_CUR;
+  inline constexpr int SEEK_END = impl::__SEEK_END;
+  inline constexpr int SEEK_SET = impl::__SEEK_SET;
+
+  inline constexpr size_t TMP_MAX = impl::__TMP_MAX;
+
+  FILE* stdin = impl::__stdin;
+  FILE* stdout = impl::__stdout;
+  FILE* stderr = impl::__stderr;
+
+  using ::remove;
+  using ::rename;
+  using ::tmpfile;
+  using ::tmpnam;
+
+  using ::fclose;
+  using ::fflush;
+  using ::fopen;
+  using ::freopen;
+  using ::setbuf;
+  using ::setvbuf;
+
+  using ::fprintf;
+  using ::fscanf;
+  using ::printf;
+  using ::scanf;
+  using ::snprintf;
+  using ::sprintf;
+  using ::sscanf;
+  using ::vprintf;
+  using ::vfscanf;
+  using ::vprintf;
+  using ::vscanf;
+  using ::vsnprintf;
+  using ::vsprintf;
+  using ::vsscanf;
+
+  using ::fgetc;
+  using ::fgets;
+  using ::fputc;
+  using ::fputs;
+  using ::getc;
+  using ::getchar;
+  using ::putc;
+  using ::putchar;
+  using ::puts;
+  using ::ungetc;
+
+  using ::fread;
+  using ::fwrite;
+
+  using ::fgetpos;
+  using ::fseek;
+  using ::fsetpos;
+  using ::ftell;
+  using ::rewind;
+
+  using ::clearerr;
+  using ::feof;
+  using ::ferror;
+  using ::perror;
+}
+
