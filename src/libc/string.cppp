@@ -1,0 +1,35 @@
+module;
+
+#include <string.h>
+
+export module ties.libc:string;
+
+export namespace ties::libc {
+  using ::memcpy;
+  using ::memmove;
+  using ::strcpy;
+  using ::strncpy;
+
+  using ::strcat;
+  using ::strncat;
+
+  using ::memcmp;
+  using ::strcmp;
+  using ::strcoll;
+  using ::strncmp;
+  using ::strxfrm;
+
+  using ::memchr;
+  using ::strchr;
+  using ::strcspn;
+  using ::strpbrk;
+  using ::strrchr;
+  using ::strspn;
+  using ::strstr;
+  using ::strtok;
+
+  using ::memset;
+  using ::strerror;
+  using ::strlen;
+}
+
