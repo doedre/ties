@@ -16,4 +16,5 @@ export import :stdint;
 export import :stdio;
 export import :stdlib;
 export import :string;
+export import :threads;
 

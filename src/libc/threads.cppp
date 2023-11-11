@@ -1,0 +1,66 @@
+module;
+
+#include <threads.h>
+
+export module ties.libc:threads;
+
+namespace ties::libc::impl {
+  static constexpr once_flag __ONCE_FLAG_INIT = ONCE_FLAG_INIT;
+  static constexpr int __TSS_DTOR_ITERATIONS = TSS_DTOR_ITERATIONS;
+}
+
+#undef ONCE_FLAG_INIT
+#undef TSS_DTOR_ITERATIONS
+
+export namespace ties::libc {
+  inline constexpr once_flag ONCE_FLAG_INIT = impl::__ONCE_FLAG_INIT;
+  inline constexpr int TSS_DTOR_ITERATIONS = impl::__TSS_DTOR_ITERATIONS;
+
+  using ::cnd_t;
+  using ::thrd_t;
+  using ::tss_t;
+  using ::mtx_t;
+  using ::tss_dtor_t;
+  using ::thrd_start_t;
+  using ::once_flag;
+
+  using ::mtx_plain;
+  using ::mtx_recursive;
+  using ::mtx_timed;
+  using ::thrd_timedout;
+  using ::thrd_success;
+  using ::thrd_busy;
+  using ::thrd_error;
+  using ::thrd_nomem;
+
+  using ::call_once;
+
+  using ::cnd_broadcast;
+  using ::cnd_destroy;
+  using ::cnd_init;
+  using ::cnd_signal;
+  using ::cnd_timedwait;
+  using ::cnd_wait;
+
+  using ::mtx_destroy;
+  using ::mtx_init;
+  using ::mtx_lock;
+  using ::mtx_timedlock;
+  using ::mtx_trylock;
+  using ::mtx_unlock;
+
+  using ::thrd_create;
+  using ::thrd_current;
+  using ::thrd_detach;
+  using ::thrd_equal;
+  using ::thrd_exit;
+  using ::thrd_join;
+  using ::thrd_sleep;
+  using ::thrd_yield;
+
+  using ::tss_create;
+  using ::tss_delete;
+  using ::tss_get;
+  using ::tss_set;
+}
+
