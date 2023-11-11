@@ -1,0 +1,81 @@
+module;
+
+#include <stdlib.h>
+
+export module ties.libc:stdlib;
+
+namespace ties::libc::impl {
+  static constexpr int __EXIT_SUCCESS = EXIT_SUCCESS;
+  static constexpr int __EXIT_FAILURE = EXIT_FAILURE;
+
+  static constexpr int __RAND_MAX = RAND_MAX;
+  inline size_t __MB_CUR_MAX = MB_CUR_MAX;
+}
+
+#undef EXIT_SUCCESS
+#undef EXIT_FAILURE
+
+#undef RAND_MAX
+#undef MB_CUR_MAX
+
+export namespace ties::libc {
+  using ::div_t;
+  using ::ldiv_t;
+  using ::lldiv_t;
+
+  inline constexpr int EXIT_SUCCESS = impl::__EXIT_SUCCESS;
+  inline constexpr int EXIT_FAILURE = impl::__EXIT_FAILURE;
+
+  inline constexpr int RAND_MAX = impl::__RAND_MAX;
+  int MB_CUR_MAX = impl::__MB_CUR_MAX;
+
+  using ::atof;
+  using ::strtod;
+  using ::atoi;
+  using ::atol;
+  using ::atoll;
+  using ::strtod;
+  using ::strtof;
+  using ::strtold;
+  using ::strtol;
+  using ::strtoll;
+  using ::strtoul;
+  using ::strtoull;
+
+  using ::rand;
+  using ::srand;
+
+  using ::aligned_alloc;
+  using ::calloc;
+  using ::free;
+  using ::malloc;
+  using ::realloc;
+
+  using ::abort;
+  using ::atexit;
+  using ::at_quick_exit;
+  using ::exit;
+  using ::_Exit;
+  using ::getenv;
+  using ::quick_exit;
+  using ::system;
+
+  using ::bsearch;
+  using ::qsort;
+
+  using ::abs;
+  using ::labs;
+  using ::llabs;
+
+  using ::div;
+  using ::ldiv;
+  using ::lldiv;
+
+  using ::mblen;
+  using ::mbtowc;
+
+  using ::wctomb;
+  using ::mbstowcs;
+  using ::wcstombs;
+}
+

@@ -14,4 +14,5 @@ export import :stdarg;
 export import :stddef;
 export import :stdint;
 export import :stdio;
+export import :stdlib;
 
