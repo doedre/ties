@@ -1,5 +1,3 @@
-module;
-
 #include <syscall.h>
 
 extern "C" int main();
@@ -17,8 +15,4 @@ extern "C" void _start() {
   for (;;)
     __syscall1(SYS_exit, ret);
 }
-
-export module ties.rt;
-
-using ::main;
 

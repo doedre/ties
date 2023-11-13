@@ -1,11 +1,51 @@
 ties_module_names := \
-		libc
+		libc \
+		rt
 
 ties_modules := $(ties_module_names:%=$(OBJ)/ties.%.o)
 
-ties_tests_static := \
+ties_module_impl_libc := \
+		ctype \
+		fenv \
+		flt \
+		limits \
+		locale \
+		math \
+		setjmp \
+		signal \
+		stdarg \
+		stddef \
+		stdint \
+		stdio \
+		stdlib \
+		string \
+		threads \
+		time \
+		uchar \
+		wchar \
+		wctype
 
-ties_tests_static := $(ties_tests_static:%.cpp=$(BIN)/$(TEST)/%)
+ties_module_sources_libc := $(ties_module_impl_libc:%=$(SRC)/libc/%.cppp)
+ties_module_pcms_libc := $(ties_module_impl_libc:%=$(PCM)/ties.libc-%.pcm)
+ties_module_objs_libc := $(ties_module_impl_libc:%=$(OBJ)/ties.libc-%.o)
+
+ties_module_sources_rt :=
+ties_module_pcms_rt :=
+ties_module_objs_rt :=
+
+ties_modules_objs = \
+		$(ties_module_objs_libc) \
+		$(ties_module_objs_rt)
+
+$(PCM)/ties.rt.pcm: $(SRC)/rt/rt.cppm
+	@printf ' PCM\t%-40s\t-> %s\n' "$<" "$@"
+	@mkdir -p $(PCM)
+	@$(CXX) $(PRECOMPILE_ARGS) -I$(INC) -c $< -o $@
+
+$(OBJ)/ties.rt.o: $(PCM)/ties.rt.pcm
+	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
+	@mkdir -p $(OBJ)
+	@$(CXX) $(COMPILE_ARGS) -c $< -o $@
 
 $(PCM)/ties.libc-ctype.pcm: $(SRC)/libc/ctype.cppp
 	@printf ' PCM\t%-40s\t-> %s\n' "$<" "$@"
@@ -207,12 +247,12 @@ $(OBJ)/ties.libc-wctype.o: $(PCM)/ties.libc-wctype.pcm
 	@mkdir -p $(OBJ)
 	@$(CXX) $(COMPILE_ARGS) -c $< -o $@
 
-$(PCM)/ties.libc.pcm: $(SRC)/libc/libc.cppm $(PCM)/ties.libc-ctype.pcm $(PCM)/ties.libc-flt.pcm $(PCM)/ties.libc-limits.pcm $(PCM)/ties.libc-locale.pcm $(PCM)/ties.libc-math.pcm $(PCM)/ties.libc-setjmp.pcm $(PCM)/ties.libc-signal.pcm $(PCM)/ties.libc-stdarg.pcm $(PCM)/ties.libc-stddef.pcm $(PCM)/ties.libc-fenv.pcm $(PCM)/ties.libc-stdint.pcm $(PCM)/ties.libc-stdio.pcm $(PCM)/ties.libc-stdlib.pcm $(PCM)/ties.libc-string.pcm $(PCM)/ties.libc-threads.pcm $(PCM)/ties.libc-time.pcm $(PCM)/ties.libc-uchar.pcm $(PCM)/ties.libc-wchar.pcm $(PCM)/ties.libc-wctype.pcm
+$(PCM)/ties.libc.pcm: $(SRC)/libc/libc.cppm $(ties_module_pcms_libc)
 	@printf ' PCM\t%-40s\t-> %s\n' "$<" "$@"
 	@mkdir -p $(PCM)
 	@$(CXX) $(PRECOMPILE_ARGS) -I$(INC) -c $< -o $@
 
-$(OBJ)/ties.libc.o: $(PCM)/ties.libc.pcm $(OBJ)/ties.libc-ctype.o $(OBJ)/ties.libc-flt.o $(OBJ)/ties.libc-limits.o $(OBJ)/ties.libc-locale.o $(OBJ)/ties.libc-math.o $(OBJ)/ties.libc-setjmp.o $(OBJ)/ties.libc-signal.o $(OBJ)/ties.libc-stdarg.o $(OBJ)/ties.libc-stddef.o $(OBJ)/ties.libc-fenv.o $(OBJ)/ties.libc-stdint.o $(OBJ)/ties.libc-stdio.o $(OBJ)/ties.libc-stdlib.o $(OBJ)/ties.libc-string.o $(OBJ)/ties.libc-threads.o $(OBJ)/ties.libc-time.o $(OBJ)/ties.libc-uchar.o $(OBJ)/ties.libc-wchar.o $(OBJ)/ties.libc-wctype.o
+$(OBJ)/ties.libc.o: $(PCM)/ties.libc.pcm $(ties_module_objs_libc)
 	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
 	@mkdir -p $(OBJ)
 	@$(CXX) $(COMPILE_ARGS) -c $< -o $@

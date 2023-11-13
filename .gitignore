@@ -3,5 +3,5 @@ compile_commands.json
 .obj
 .pcm
 gcm.cache
-bin
+build_*
 

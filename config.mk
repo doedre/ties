@@ -9,9 +9,10 @@ INC := arch/$(ARCH)
 TEST := tests
 
 ### Artifacts
-OBJ := .obj
-PCM := .pcm
-BIN := bin
+OUT := build_$(ARCH)
+OBJ := $(OUT)/.obj
+PCM := $(OUT)/.pcm
+LIB := $(OUT)/lib
 
 ### Compilation options
 CXX := clang++
@@ -20,7 +21,8 @@ COMPILE_ARGS := \
 		-nodefaultlibs \
 		-fno-rtti \
 		-fno-exceptions \
-		-fPIC \
+		-nostdlib \
+		-fPIC
 
 PRECOMPILE_ARGS := \
 		-xc++-module \
@@ -28,4 +30,7 @@ PRECOMPILE_ARGS := \
 		-fprebuilt-module-path=./$(PCM) \
 		$(COMPILE_ARGS)
 
+LDFLAGS := \
+		-L$(LIB) -lties \
+		-fprebuilt-module-path=$(PCM)
 
