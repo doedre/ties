@@ -12,10 +12,10 @@ $(LIB)/libties.a: $(ties_modules) $(ties_modules_objs)
 	@mkdir -p $(LIB)
 	@llvm-ar crv $@ $^
 
-$(OUT)/examples/main: examples/main.cpp $(LIB)/libties.a
+$(OUT)/examples/main: examples/main.cpp $(LIB)/libties.a $(OBJ)/crti.o $(OBJ)/crtn.o $(OBJ)/crt0.o
 	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
 	@mkdir -p $(OUT)/examples
-	@$(CXX) $(COMPILE_ARGS) $< $(LDFLAGS) -o $@ -static -lc
+	@$(CXX) $(COMPILE_ARGS) -nostartfiles $< $(LDFLAGS) -static -lc -o $@ $(OBJ)/crti.o $(OBJ)/crtn.o $(OBJ)/crt0.o
 
 clean:
 	@rm -rf $(OUT)

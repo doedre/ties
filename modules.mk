@@ -37,6 +37,18 @@ ties_modules_objs = \
 		$(ties_module_objs_libc) \
 		$(ties_module_objs_rt)
 
+$(OBJ)/crti.o: $(SRC)/rt/crti.s
+	mkdir -p $(OBJ)
+	$(CXX) -c $< -o $@
+
+$(OBJ)/crtn.o: $(SRC)/rt/crtn.s
+	mkdir -p $(OBJ)
+	$(CXX) -c $< -o $@
+
+$(OBJ)/crt0.o: $(SRC)/rt/crt0.s
+	mkdir -p $(OBJ)
+	$(CXX) -c $< -o $@
+
 $(PCM)/ties.rt.pcm: $(SRC)/rt/rt.cppm
 	@printf ' PCM\t%-40s\t-> %s\n' "$<" "$@"
 	@mkdir -p $(PCM)

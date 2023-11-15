@@ -11,7 +11,7 @@ static __inline long __syscall1(long n, long a1)
 	return ret;
 }
 
-extern "C" void _start() {
+extern "C" void start_linux() {
   int ret = main();
   __syscall1(SYS_exit_group, ret);
   for (;;)

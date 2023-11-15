@@ -5,6 +5,6 @@ using namespace ties;
 
 int main()
 {
-  return libc::strlen("Hello, world!");
+  return libc::puts("Hello, world!");
 }
 
