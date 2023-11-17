@@ -1,10 +1,8 @@
 import ties.rt;
 import ties.libc;
 
-using namespace ties;
-
-int main()
+int ties::main()
 {
-  return libc::puts("Hello, world!");
+  return ties::libc::puts("Hello, world!");
 }
 

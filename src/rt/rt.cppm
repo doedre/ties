@@ -2,7 +2,9 @@ module;
 
 #include <syscall.h>
 
-extern "C" int main();
+namespace ties {
+  int main();
+}
 
 static __inline long __syscall1(long n, long a1)
 {
@@ -12,7 +14,7 @@ static __inline long __syscall1(long n, long a1)
 }
 
 extern "C" void start_linux() {
-  int ret = main();
+  int ret = ties::main();
   __syscall1(SYS_exit_group, ret);
   for (;;)
     __syscall1(SYS_exit, ret);
@@ -20,5 +22,7 @@ extern "C" void start_linux() {
 
 export module ties.rt;
 
-using ::main;
+export namespace ties {
+  using ties::main;
+}
 
