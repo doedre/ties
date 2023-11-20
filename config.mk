@@ -18,6 +18,8 @@ LIB := $(OUT)/lib
 CXX := clang++
 COMPILE_ARGS := \
 		-std=c++20 \
+		-Wall \
+		-pedantic \
 		-nodefaultlibs \
 		-fno-rtti \
 		-fno-exceptions \

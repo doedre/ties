@@ -1,6 +1,7 @@
 ties_module_names := \
 		libc \
-		rt
+		rt \
+		types
 
 ties_modules := $(ties_module_names:%=$(OBJ)/ties.%.o)
 
@@ -58,6 +59,16 @@ $(PCM)/ties.rt.pcm: $(SRC)/rt/rt.cppm
 	@$(CXX) $(PRECOMPILE_ARGS) -I$(INC) -c $< -o $@
 
 $(OBJ)/ties.rt.o: $(PCM)/ties.rt.pcm
+	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
+	@mkdir -p $(OBJ)
+	@$(CXX) $(COMPILE_ARGS) -c $< -o $@
+
+$(PCM)/ties.types.pcm: $(SRC)/types/types.cppm $(PCM)/ties.libc.pcm
+	@printf ' PCM\t%-40s\t-> %s\n' "$<" "$@"
+	@mkdir -p $(PCM)
+	@$(CXX) $(PRECOMPILE_ARGS) -I$(INC) -c $< -o $@
+	
+$(OBJ)/ties.types.o: $(PCM)/ties.types.pcm $(OBJ)/ties.libc.o
 	@printf ' CXX\t%-40s\t-> %s\n' "$<" "$@"
 	@mkdir -p $(OBJ)
 	@$(CXX) $(COMPILE_ARGS) -c $< -o $@
