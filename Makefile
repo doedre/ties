@@ -1,9 +1,11 @@
 include config.mk
-include modules.mk
 
 .SUFFIXES: .cppm .cppp .pcm .o .cpp .hpp
 
 all: $(LIB)/libties.a $(OUT)/examples/main
+
+
+include modules.mk
 
 test: all
 
